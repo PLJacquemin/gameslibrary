@@ -9,7 +9,7 @@ from django.db.models import Sum
 from django.db.models import Avg, Max, Min, FloatField, Q
 from django.http import JsonResponse
 from random import choice
-from .get_steam import get_steam_db, get_psn_db
+from .get_libraries import get_steam_db, get_psn_db
 from howlongtobeatpy import HowLongToBeat
 import datetime
 from decimal import *
