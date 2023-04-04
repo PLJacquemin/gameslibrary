@@ -2,6 +2,16 @@ from .get_steamlist import getownedgames
 from .csv_to_db import db_connect, dataframe_to_sql
 from .get_psnlist import getpsngames
 
+#postgresql database parameters
+user='postgres'
+password=''
+host='localhost'
+port='5432'
+database='steamlist'
+schema='public'
+table='GamesLibrary_video_game'
+
+
 def get_steam_db(apikey, steamid):
     #api key and steamid for data collection
     apikey = apikey
@@ -11,15 +21,6 @@ def get_steam_db(apikey, steamid):
     if not apikey or not steamid:
         test_key = False
         return test_key
-
-    #postgresql database parameters
-    user='postgres'
-    password=''
-    host='localhost'
-    port='5432'
-    database='steamlist'
-    schema='public'
-    table='GamesLibrary_video_game'
 
     #csv creation and storage in dataframe
     data = getownedgames(apikey=apikey, steamid=steamid)
@@ -36,15 +37,6 @@ def get_psn_db(token):
     if not token:
         test_token = False
         return test_token
-
-    #postgresql database parameters
-    user='postgres'
-    password=''
-    host='localhost'
-    port='5432'
-    database='steamlist'
-    schema='public'
-    table='GamesLibrary_video_game'
 
     #csv creation and storage in dataframe
     data = getpsngames(token=token)

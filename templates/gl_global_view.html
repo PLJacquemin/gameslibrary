@@ -59,7 +59,7 @@
       <div class="card">
         <div class="card-body">
             <div id="container5" style="width: 150%;">
-                <canvas id="platform-total" data-url="{% url 'GamesLibrary:platform-total' %}" width="358" height="400"></canvas>
+                <canvas id="global-platform-pie" data-url="{% url 'GamesLibrary:global-platform-pie' %}" width="358" height="400"></canvas>
             </div>
         </div>
       </div>
@@ -71,7 +71,7 @@
     <div class="card">
       <div class="card-body">
         <div id="container2" style="width: 120%; ">
-          <canvas id="genre-total-chart" data-url="{% url 'GamesLibrary:genre-total-chart' %}" width="350" height="500"></canvas>
+          <canvas id="global-genre-pie" data-url="{% url 'GamesLibrary:global-genre-pie' %}" width="350" height="500"></canvas>
         </div>
       </div>
     </div>
@@ -118,12 +118,12 @@
 
     $(function () {
 
-      var $platformTotal = $("#platform-total");
+      var $globalPlateformPie = $("#global-platform-pie");
       $.ajax({
-        url: $platformTotal.data("url"),
+        url: $globalPlateformPie.data("url"),
         success: function (data) {
 
-          var ctx = $platformTotal[0].getContext("2d");
+          var ctx = $globalPlateformPie[0].getContext("2d");
 
           new Chart(ctx, {
             type: 'doughnut',
@@ -219,12 +219,12 @@
 
     $(function () {
 
-      var $genreTotalChart = $("#genre-total-chart");
+      var $globalGenrePie = $("#global-genre-pie");
       $.ajax({
-        url: $genreTotalChart.data("url"),
+        url: $globalGenrePie.data("url"),
         success: function (data) {
 
-          var ctx = $genreTotalChart[0].getContext("2d");
+          var ctx = $globalGenrePie[0].getContext("2d");
 
           new Chart(ctx, {
             type: 'doughnut',

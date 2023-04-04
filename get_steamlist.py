@@ -4,6 +4,8 @@ import os.path
 import sys
 from urllib.request import urlopen
 
+data_columns = ['id','name','playtime_forever','img_icon_url','completed','played','date','genre','platform','appid','last_played','img_url']
+
 #fonction pour aller chercher la liste de jeu sur Steam
 def getownedgames(apikey, steamid):
     print("*"*50)
@@ -60,19 +62,7 @@ def getownedgames(apikey, steamid):
                     df_games.loc[df_games['name']==game]['appid'].values[0],
                     '2020-01-01',
                     f"https://cdn.akamai.steamstatic.com/steam/apps/{df_games.loc[df_games['name']==game]['appid'].values[0]}/header.jpg"
-                    ]],columns=[
-                    'id',
-                    'name',
-                    'playtime_forever',
-                    'img_icon_url',
-                    'completed',
-                    'played',
-                    'date',
-                    'genre',
-                    'platform',
-                    'appid',
-                    'last_played',
-                    'img_url'])
+                    ]],columns=data_columns)
                 df_game.loc[df_game['playtime_forever']!=0, 'played'] = True
                 df_games_new = pd.concat([df_games_new, df_game], ignore_index=True)
                 count+=1

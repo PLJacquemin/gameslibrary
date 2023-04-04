@@ -2,15 +2,7 @@ from psnawp_api import PSNAWP
 import os
 import pandas as pd
 
-# To get started you need to obtain npsso <64 character code>. You need to follow the following steps
-# 
-#     Login into your My PlayStation account.
-# 
-#     In another tab, go to https://ca.account.sony.com/api/v1/ssocookie
-# 
-#     If you are logged in you should see a text similar to this
-# 
-# This npsso code will be used in the api for authentication purposes. The refresh token that is generated from npsso lasts about 2 months. After that you have to get a new npsso token. The bot will print a warning if there are less than 3 days left in refresh token expiration
+data_columns = ['id','name','playtime_forever','img_icon_url','completed','played','date','genre','platform','appid','last_played','img_url']
 
 
 def getpsngames(token='NJXEoLmknISX0MCdn44bUyFlgKoXHkWNcckN4T0qRvhcQo34gVXbFL4jw5X1gTIN'):
@@ -32,19 +24,7 @@ def getpsngames(token='NJXEoLmknISX0MCdn44bUyFlgKoXHkWNcckN4T0qRvhcQo34gVXbFL4jw
                                   "Playstation",
                                   game.title_id,
                                   game.last_played_date_time.strftime('%Y-%m-%d'),
-                                  game.image_url]],columns=[
-                                'id',
-                                'name',
-                                'playtime_forever',
-                                'img_icon_url',
-                                'completed',
-                                'played',
-                                'date',
-                                'genre',
-                                'platform',
-                                'appid',
-                                'last_played',
-                                'img_url'])
+                                  game.image_url]],columns=data_columns)
             df_game.loc[df_game['playtime_forever']!=0, 'played'] = True
             df_games_new = pd.concat([df_games_new, df_game], ignore_index=True)
             game_count+=1
@@ -67,19 +47,7 @@ def getpsngames(token='NJXEoLmknISX0MCdn44bUyFlgKoXHkWNcckN4T0qRvhcQo34gVXbFL4jw
                                   "Playstation",
                                   game.title_id,
                                   game.last_played_date_time.strftime('%Y-%m-%d'),
-                                  game.image_url]],columns=[
-                                'id',
-                                'name',
-                                'playtime_forever',
-                                'img_icon_url',
-                                'completed',
-                                'played',
-                                'date',
-                                'genre',
-                                'platform',
-                                'appid',
-                                'last_played',
-                                'img_url'])
+                                  game.image_url]],columns=data_columns)
                 df_game.loc[df_game['playtime_forever']!=0, 'played'] = True
                 df_games_new = pd.concat([df_games_new, df_game], ignore_index=True)
                 count+=1

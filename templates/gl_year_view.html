@@ -65,7 +65,7 @@
             </td>
             <td>
             <div id="container3" style="width: 150%; ">
-                <canvas id="genre-chart" data-url="{% url 'GamesLibrary:genre-chart' year %}" width="500" height="400"></canvas>
+                <canvas id="genre-pie" data-url="{% url 'GamesLibrary:genre-pie' year %}" width="500" height="400"></canvas>
             </div>
             </td>
         </tr>
@@ -94,7 +94,7 @@
               <h5 class="card-title">Platform of {{year}}</h5>
               <p class="card-text">Most of your games were played on {{best_platform.platform}} ({{best_platform.total}} games)</p>
               <div id="container4" style="width: 150%; ">
-              <canvas id="platform-chart" data-url="{% url 'GamesLibrary:platform-chart' year %}" width="230" height="200"></canvas></p>
+              <canvas id="platform-pie" data-url="{% url 'GamesLibrary:platform-pie' year %}" width="230" height="200"></canvas></p>
             </div>
             </div>
           </div>
@@ -223,12 +223,12 @@
 
     $(function () {
 
-      var $genreChart = $("#genre-chart");
+      var $genrePie = $("#genre-pie");
       $.ajax({
-        url: $genreChart.data("url"),
+        url: $genrePie.data("url"),
         success: function (data) {
 
-          var ctx = $genreChart[0].getContext("2d");
+          var ctx = $genrePie[0].getContext("2d");
 
           new Chart(ctx, {
             type: 'doughnut',
@@ -260,12 +260,12 @@
 
     $(function () {
 
-      var $platformChart = $("#platform-chart");
+      var $platformPie = $("#platform-pie");
       $.ajax({
-        url: $platformChart.data("url"),
+        url: $platformPie.data("url"),
         success: function (data) {
 
-          var ctx = $platformChart[0].getContext("2d");
+          var ctx = $platformPie[0].getContext("2d");
 
           new Chart(ctx, {
             type: 'pie',
