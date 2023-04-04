@@ -1,4 +1,4 @@
-from .get_steamlist import getownedgames
+from .get_libraries import getownedgames
 from .csv_to_db import db_connect, dataframe_to_sql
 from .get_psnlist import getpsngames
 
