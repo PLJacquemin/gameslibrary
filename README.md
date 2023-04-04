@@ -1,4 +1,4 @@
-# gamelibrary
+# gameslibrary
 
 Premier test de Web App sous python avec Django.
 
