@@ -16,3 +16,16 @@ Il est nécessaire de créer un projet Django puis de créer l'app GamesLibrary 
 Plusieurs librairies python supplémentaires ont été utilisées:
 * Pour récupérer les infos PSN: PSNAWP
 * Pour aller lire How Long To Beat: HowLongToBeat
+
+## Liste des librairies utilisées:
+
+* sqlalchemy
+* numpy
+* PSNAWP
+* Pandas
+* urllib
+* json
+* datetime
+* decimal
+* random
+* howlongtobeatpy

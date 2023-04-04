@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine, exc, update, Table, MetaData, and_
 import numpy as np
-
 import sys
 
 # establish connections
@@ -26,8 +25,3 @@ def dataframe_to_sql(db_dataframe, db_engine, db_schema, db_table):
             db_dataframe.iloc[i:i+1].to_sql(name=db_table, con=db_engine, schema=db_schema, index=False, if_exists= 'append')
         except exc.IntegrityError:
             pass
-        
-        #stmt = (
-        #    stable.update().values(playtime_forever = int(db_dataframe.iloc[i:i+1]['playtime_forever'].values[0])).where((stable.c.name == db_dataframe.iloc[i:i+1]['name'].values[0])&(stable.c.plateform == db_dataframe.iloc[i:i+1]['plateform'].values[0]))
-        #    )
-        #db_engine.execute(stmt)
