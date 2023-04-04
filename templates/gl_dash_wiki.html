@@ -1,0 +1,33 @@
+{% extends 'gl_base.html' %}
+
+{% block content %}
+
+<div class="card text-left">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'GamesLibrary:home' %}">Welcome</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="true"><img src="/static/icons/dashboard.png" width="20" height="20"> Dashboards</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'GamesLibrary:data-wiki' %}"><img src="/static/icons/database.png" width="20" height="20"> Database</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'GamesLibrary:wip' %}"><img src="/static/icons/wip.png" width="20" height="20"> Work in progress</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Dashboards</h5>
+    <p class="card-text">Le menu Dashboards permet l'accès à deux tableaux de bord différents:</p>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Yearly: Fourni l'analyse des données pour l'année en cours</li>
+      <li class="list-group-item">Global: Fourni des analyse sur l'ensemble de la base de donnée</li>
+    </ul>
+    <p class="card-text"></p>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'gl_base.html' %}
+
+{% block content %}
+<div class="card text-dark bg-light">
+  <div class="card-header">
+      <h4>Random list of games</h4>
+  </div>
+  <div class="card-body"></div>
+    {% for game in game_list %}
+
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+              <img src="{{game.img_icon_url}}" style="width: 32px;height:32px"/>   <a href="{% url 'GamesLibrary:game-detail' game.id %}">{{game.name}}</a><br/>
+             
+            </td>
+            <td>
+              <div align="right">
+                <em><small>Last played: {{game.last_played|date:'Y-m-d'}}</small></em>
+                <a href="{% url 'GamesLibrary:game-update' game.id %}" class="btn btn-dark btn-sm">Update</a>    
+                <a href="{% url 'GamesLibrary:game-delete' game.id %}" class="btn btn-danger btn-sm">Delete</a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    {% endfor %}
+  
+  </div>
+</div>
+    
+
+{% endblock %}

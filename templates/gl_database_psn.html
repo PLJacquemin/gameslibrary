@@ -1,0 +1,48 @@
+{% extends 'gl_base.html' %}
+
+{% block content %}
+
+<div class="card text-left" style="width: 500px">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'GamesLibrary:db-steam' %}">Steam</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="true">PSN</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">In construction</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Refresh Playstation Database ?</h5>
+      {% if submitted %}      
+    <p class="card-text"><br/><br/><br/><strong>Database refreshed succesfully</strong><br/><br/><br/></p>
+    {% elif error %} 
+      <p class="card-text"><br/><br/><br/><strong>PSN token needed</strong><br/><br/><br/></p>
+    {% else %}
+    <p class="card-text">
+      How to get the token:
+      <ul>
+        <li>Login into your My PlayStation account.</li>
+        <li>In another tab, follow this <a href="https://ca.account.sony.com/api/v1/ssocookie" target="_blank">link</a></li>
+        <li>Copy the 64 characters after "npsso"</li>
+      </ul>
+    </p>
+    <p class="card-text">
+      How to get the token:
+      <form action="" method=POST>
+        {% csrf_token %}
+        <input class="form-control" type="text" placeholder="PSN Token" name="token_psn">
+        <br/>
+        <input type="submit" value="Refresh" class="btn btn-secondary" name="run_script">
+      </form>
+    </p>
+    {% endif %}
+    <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Playstation_logo_colour.svg/800px-Playstation_logo_colour.svg.png' class="card-img-bottom">
+  </div>
+</div>
+
+  {% endblock %}

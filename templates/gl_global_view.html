@@ -1,0 +1,259 @@
+{% extends 'gl_base.html' %}
+
+{% block content %}
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+
+<div class="card mx-auto" style="width: 800px">
+    <div class="card-body">
+        <h5 class="card-title">You possesse <strong>{{total}} games</strong></h5>
+        <p class="card-text">On those {{total}} games:</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>{{finished}} games</strong> were finished ({{progress_fi}}% of your library)</li>
+        <li class="list-group-item"><strong>{{played}} games</strong> were launch at least once but never finished ({{progress_pl}}% of your library)</li>
+        <li class="list-group-item"><strong>{{untouched}} games</strong> were bought but never ever launched ({{progress_un}}% of your library)</li>
+      </ul>
+      <div class="card-body">
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" 
+            style="width: {{progress_fi}}%" aria-valuenow="25" aria-valuemin="0" 
+            aria-valuemax="100">Finished</div>
+            <div class="progress-bar" role="progressbar" 
+            style="width: {{progress_pl}}%" aria-valuenow="10" aria-valuemin="0" 
+            aria-valuemax="100">Played</div>
+            <div class="progress-bar bg-danger" role="progressbar" 
+            style="width: {{progress_un}}%" aria-valuenow="25" aria-valuemin="0" 
+            aria-valuemax="100">Untouched</div>
+        </div>
+      </div>
+</div>
+<br/>
+<div class="row mx-auto" style="width: 828px">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Platforms summary</h5>
+          <p class="card-text">Your games are present on <strong>{{number_platform}} different platforms</strong>.</p>
+        </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">The platform where you have the most games is <strong>{{best_platform.platform}}</strong> where you have 
+            <strong>{{best_platform.total}} different games</strong>. You spent <strong>{{most_time_cal.years}} year(s), {{most_time_cal.days}} 
+                day(s), {{most_time_cal.hours}} hour(s) and {{most_time_cal.minutes}} minute(s)</strong> on <strong>{{best_platform.platform}}</strong>.</li>
+        <li class="list-group-item">But you have only <strong>{{worst_platform.total}} games</strong> on 
+            <strong>{{worst_platform.platform}}</strong>. That makes <strong>{{worst_platform.platform}}</strong> 
+            your least favorite place to play games. The total amount of time spent on <strong>{{worst_platform.platform}}</strong> is <strong>{{less_time_cal.years}} year(s), {{less_time_cal.days}} 
+                day(s), {{less_time_cal.hours}} hour(s) and {{less_time_cal.minutes}} minute(s)</strong></li>
+        <li class="list-group-item">Anyways, you lost <strong>{{total_time_cal.years}} year(s), {{total_time_cal.days}} 
+            day(s), {{total_time_cal.hours}} hour(s) and {{total_time_cal.minutes}} minute(s)</strong> of your life playing 
+            videogames, congratulations!
+      </ul>
+    </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+            <div id="container5" style="width: 150%;">
+                <canvas id="platform-total" data-url="{% url 'GamesLibrary:platform-total' %}" width="358" height="400"></canvas>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<br/>
+<div class="row mx-auto" style="width: 828px">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <div id="container2" style="width: 120%; ">
+          <canvas id="genre-total-chart" data-url="{% url 'GamesLibrary:genre-total-chart' %}" width="350" height="500"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+          <div id="container3" style="width: 150%;">
+            <canvas id="time-genre-chart" data-url="{% url 'GamesLibrary:time-genre-chart' %}" width="350" height="500"></canvas>
+          </div>
+      </div>
+    </div>
+  </div>      
+</div>
+<br/>
+<div class="card mx-auto" style="width: 800px">
+    <div class="card-body">
+        <h5 class="card-title">There are <strong>{{number_genre}} different genres</strong> of games in your library</h5>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>{{best_genre.genre}}</strong> is the one with the most games (<strong>{{best_genre.total}} games
+            for a total of {{best_genre_hours}} H {{best_genre_minutes}} minutes</strong>).
+        </li>
+        <li class="list-group-item">The genre with the less games is <strong>{{low_genre.genre}}</strong> with only <strong>{{low_genre.total}} games
+            for a total of {{low_genre_hours}} H {{low_genre_minutes}} minutes</strong></li>
+        <li class="list-group-item">The genre where you spent the most time is <strong>{{long_genre.genre}}</strong> with <strong>{{long_genre.total}} games
+                for a total of {{long_genre_hours}} H {{long_genre_minutes}} minutes</strong>. The one where you spent the less time is <strong>{{short_genre.genre}} ({{short_genre_hours}} H {{short_genre_minutes}} minutes)</strong></li>
+        <li class="list-group-item">But the genre where you spent the most average time per game is <strong>{{lpg_genre.genre}}</strong> with <strong>{{lpg_genre.total}} games
+                    ({{lpg_genre_hours}} H {{lpg_genre_minutes}} minutes per game)</strong>. At the opposite, the genre with the shortest time per game is <strong>{{spg_genre.genre}} 
+                    ({{spg_genre_hours}} H {{spg_genre_minutes}} minutes per game)</strong></li>
+        </ul>
+</div>
+</body>
+<!-- best_genre, best_genre_hours, best_genre_minutes,
+                   'low_genre':low_genre, 'low_genre_hours':low_genre_hours, 'low_genre_minutes':low_genre_minutes,
+                   'long_genre':long_genre, 'long_genre_hours':long_genre_hours, 'long_genre_minutes':long_genre_minutes,
+                   'short_genre':short_genre, 'short_genre_hours':short_genre_hours, 'short_genre_minutes':short_genre_minutes,
+                   'lpg_genre':lpg_genre, 'lpg_genre_hours':lpg_genre_hours, 'lpg_genre_minutes':lpg_genre_minutes,
+                   'spg_genre':spg_genre, 'spg_genre_hours':spg_genre_hours, 'spg_genre_minutes':spg_genre_minutes -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script>
+
+    $(function () {
+
+      var $platformTotal = $("#platform-total");
+      $.ajax({
+        url: $platformTotal.data("url"),
+        success: function (data) {
+
+          var ctx = $platformTotal[0].getContext("2d");
+
+          new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Games by platform',
+                    data: data.data,
+                    hoverOffset: 4,
+                    backgroundColor: data.bkgrnd
+                }],
+            },
+            options: {
+              responsive: false,
+              title: {
+                display: true,
+                text: 'Games by platform'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+  </script>
+  <script>
+
+    $(function () {
+
+      var $timeGenreChart = $("#time-genre-chart");
+      $.ajax({
+        url: $timeGenreChart.data("url"),
+        success: function (data) {
+
+          var ctx = $timeGenreChart[0].getContext("2d");
+
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+                datasets: [{
+                label: 'Time spent per genre (hours)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgb(255, 99, 132)',
+                borderWidth: 1,
+                data: data.data2,
+                order: 2
+                }, {
+                label: 'Time spent per game (hours)',
+                data: data.data,
+                type: 'line',
+                fill: false,
+                borderColor: 'rgb(54, 162, 235)',
+                order: 1
+                 }],
+       labels: data.labels,
+   },
+            options: {
+                legend: {
+                display: true
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                        beginAtZero: true
+                        },
+                        gridLines: {
+                        display:true
+                        }
+                        }],
+                    xAxes: [{
+                        gridLines: {
+                        display:true
+                        }
+                        }]
+                        },
+              responsive: false,
+              title: {
+                display: true,
+                text: 'Time spent'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+  </script>
+  <script>
+
+    $(function () {
+
+      var $genreTotalChart = $("#genre-total-chart");
+      $.ajax({
+        url: $genreTotalChart.data("url"),
+        success: function (data) {
+
+          var ctx = $genreTotalChart[0].getContext("2d");
+
+          new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Games by genre',
+                    data: data.data,
+                    hoverOffset: 4,
+                    backgroundColor: data.bkgrnd
+                }],
+            },
+            options: {
+              legend: {
+                display: true
+                },
+              responsive: false,
+              title: {
+                display: true,
+                text: 'Games by genre'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+  </script>
+
+{% endblock %}

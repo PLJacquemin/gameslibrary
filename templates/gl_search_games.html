@@ -1,0 +1,27 @@
+{% extends 'gl_base.html' %}
+
+{% block content %}
+
+{% if searched %}
+<h1>Search Results For "{{searched}}"</h1>
+<br/><br/>
+{% for game in games %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><img src="{{game.img_icon_url}}" style="width: 32px;height:32px"/><strong>  <a href="{% url 'GamesLibrary:game-detail' game.id %}">{{game.name}}</a></strong></h3>
+    </div>
+    <div class="panel-body">
+        <a href="{% url 'GamesLibrary:game-update' game.id %}" class="btn btn-secondary">Update</a>
+        <a href="{% url 'GamesLibrary:game-delete' game.id %}" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+{% empty %}
+  Sorry, no matches for "{{searched}}"
+<br/>
+{% endfor %}
+{% else %}
+<h1>No results</h1>
+{% endif %}
+    
+
+{% endblock %}

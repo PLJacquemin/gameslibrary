@@ -1,0 +1,39 @@
+  {% load static %}
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'GamesLibrary:home' %}">
+        <img src="{% static 'icons/gamepad_icon.png' %}" alt="" width="30" height="24" class="d-inline-block align-text-top">
+        Games Library Manager
+      </a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Dashboards
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="{% url 'GamesLibrary:year-view' %}">Yearly</a></li>
+              <li><a class="dropdown-item" href="{% url 'GamesLibrary:global-view' %}">Global</a></li>
+            </ul>
+          <li class="nav-item dropdown">
+              <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Database
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'GamesLibrary:games-list' %}">Games</a></li>
+                <li><a class="dropdown-item" href="{% url 'GamesLibrary:add-game' %}">Add Game</a></li>
+                <li><a class="dropdown-item" href="{% url 'GamesLibrary:db-steam' %}">Refresh Database</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'GamesLibrary:roulette' %}">Roulette</a></li>
+              </ul>
+            </li>
+          </ul>
+        <form class="d-flex" method=POST action="{% url 'GamesLibrary:search-game' %}">
+          {% csrf_token %}
+          <input type="text" class="form-control" placeholder="Search Games..." name="searched">
+          <button type="submit" class="btn btn-outline-secondary">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>

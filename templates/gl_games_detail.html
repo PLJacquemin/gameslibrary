@@ -1,0 +1,56 @@
+{% extends 'gl_base.html' %}
+
+{% block content %}
+
+<div class="panel panel-default" style="width: 500px">
+    <div card="card">
+      <div class="card-header">
+        <h4><img src="{{game.img_icon_url}}" style="width: 32px;height:32px"/>   {{game.name}}: Game details</h4>
+      </div>
+      <div class="card-body">
+        <ul class="list-group">
+          <li class="list-group-item">Playing time (minutes): {{g_hours}} H {{g_minutes}} min
+          <li class="list-group-item">Genre: {{game.genre}}
+          <li class="list-group-item">Platform: {{game.platform}}
+          <li class="list-group-item">
+            <div class="form-check">
+              <label class="form-check-label" for="flexCheckIndeterminate">
+                Launched
+              </label>
+              {% if game.played %}
+              <input class="form-check-input" type="checkbox" checked disabled>
+              {% else %}
+              <input class="form-check-input" type="checkbox" disabled>
+              {% endif %}
+            </div>
+          <li class="list-group-item">
+            <div class="form-check">
+              <label class="form-check-label" for="flexCheckIndeterminate">
+                Finished
+              </label>
+              {% if game.completed %}
+              <input class="form-check-input" type="checkbox" checked disabled>
+              {% else %}
+              <input class="form-check-input" type="checkbox" disabled>
+              {% endif %}
+            </div>
+          <li class="list-group-item">Finish Date: <input class="form-control" type="date" value={{game.date|date:'Y-m-d'}}>
+          <li class="list-group-item">Last Played: <input class="form-control" type="date" value={{game.last_played|date:'Y-m-d'}}>
+          <li class="list-group-item">
+            Time to beat:
+            <p class="text-success"><span class="badge rounded-pill bg-success">{{hltb_main}}</span>  Main</p>
+            <p class="text-warning"><span class="badge rounded-pill bg-warning text-dark">{{hltb_extra}}</span>   Main+Extra</p>
+            <p class="text-danger"><span class="badge rounded-pill bg-danger">{{hltb_complete}}</span>   Completionist</p>
+          </li>
+      </ul>
+      </div>
+    </div>
+    <img src='{{game.img_url}}' class="card-img-bottom">
+    <br/><br/>
+    <div>
+        <a href="{% url 'GamesLibrary:game-update' game.id %}" class="btn btn-secondary">Update</a>
+        <a href="{% url 'GamesLibrary:game-delete' game.id %}" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+
+  {% endblock %}

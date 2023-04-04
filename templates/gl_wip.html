@@ -1,0 +1,34 @@
+{% extends 'gl_base.html' %}
+
+{% block content %}
+
+<div class="card text-left">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'GamesLibrary:home' %}">Welcome</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'GamesLibrary:dash-wiki' %}"><img src="/static/icons/dashboard.png" width="20" height="20"> Dashboards</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'GamesLibrary:data-wiki' %}"><img src="/static/icons/database.png" width="20" height="20"> Database</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="true"><img src="/static/icons/wip.png" width="20" height="20"> Work in progress</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Work in progress</h5>
+    <p class="card-text">Liste des features à rejouter: </p>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><s>Ajouter dans la base de donnée l'url de l'illustration et de l'icône</s></li>
+      <li class="list-group-item">Ouvrir l'import des données venant d'autres services (fait pour le PSN)</li>
+      <li class="list-group-item"><s>Ajouter la possibilité d'analyser les autres années dans l'analyse des dashboards</s></li>
+      <li class="list-group-item">A définir</li>
+    </ul>
+  </div>
+</div>
+
+{% endblock %}

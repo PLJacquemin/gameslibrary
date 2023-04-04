@@ -1,0 +1,21 @@
+{% extends 'gl_base.html' %}
+
+{% block content %}
+        
+        {% if submitted %}
+            <strong>Game added succesfully</strong>
+        {% else %}
+        <div class="card" style="width: 500px">
+            <div class="card-header">
+                <h2>Add Game to Database</h2>
+            </div>
+            <div class="card-body">
+            <form action="" method=POST>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Submit" class="btn btn-secondary">
+            </form>
+            </div>
+        </div>
+        {% endif %}
+{% endblock %}

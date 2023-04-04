@@ -1,0 +1,21 @@
+{% extends 'gl_base.html' %}
+
+{% block content %}
+
+
+<div class="panel panel-default" style="width: 500px">
+  <div card="card">
+    <div class="card-header">
+      <h4>Have you ever played to ... ?</h4>
+    </div>
+    <div class="card-body">
+      <img src="{{game.img_icon_url}}" style="width: 32px;height:32px"/>   {{game.name}}
+    </div>
+    <img src="{{game.img_url}}" class="card-img-bottom">
+      <br/><br/>
+        <a href="{% url 'GamesLibrary:game-update' game.id %}" class="btn btn-secondary">Update</a>
+        <a href="{% url 'GamesLibrary:game-delete' game.id %}" class="btn btn-danger">Delete</a>
+  </div>  
+
+
+  {% endblock %}

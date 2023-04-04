@@ -1,0 +1,35 @@
+{% extends 'gl_base.html' %}
+
+{% block content %}
+
+<div class="card text-left">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'GamesLibrary:home' %}">Welcome</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'GamesLibrary:dash-wiki' %}"><img src="/static/icons/dashboard.png" width="20" height="20"> Dashboards</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="true"><img src="/static/icons/database.png" width="20" height="20"> Database</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'GamesLibrary:wip' %}"><img src="/static/icons/wip.png" width="20" height="20"> Work in progress</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Database</h5>
+    <p class="card-text">Le menu "Database" présente les fonctionnalités suivantes:</p>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Games: Fourni un liste aléatoire d'une vingtaine de jeux de la base</li>
+      <li class="list-group-item">Add Game: Permet l'ajout d'un jeu dans la base de données via un formulaire</li>
+      <li class="list-group-item">Refresh Database: Permet le rafraîchissement de la base de données via les API des différents services</li>
+      <li class="list-group-item">Roulette: Propose un jeu aléatoire de la base qui n'est pas topé comme "fini"</li>
+    </ul>
+    <p class="card-text"></p>
+  </div>
+</div>
+
+{% endblock %}

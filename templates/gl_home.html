@@ -1,0 +1,34 @@
+{% extends 'gl_base.html' %}
+
+{% block content %}
+
+<div class="card text-left">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="true">Welcome</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'GamesLibrary:dash-wiki' %}"><img src="/static/icons/dashboard.png" width="20" height="20"> Dashboards</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'GamesLibrary:data-wiki' %}"><img src="/static/icons/database.png" width="20" height="20"> Database</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'GamesLibrary:wip' %}"><img src="/static/icons/wip.png" width="20" height="20"> Work in progress</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Welcome to the Game Database Manager</h5>
+    <p class="card-text">Bienvenue sur les gestionnaire de base de données de jeux</p>
+    <p class="card-text">Cet outil vous permet: </p>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">L'analyse de vos habitudes de jeu sur l'année en cours ou de manière globale</li>
+      <li class="list-group-item">La consultation, l'édition, la complétion de vos base de données de jeux</li>
+    </ul>
+    <p class="card-text">Pour la description des différentes fonctionnalités, n'hésitez pas à vous référez aux différents onglets.</p>
+  </div>
+</div>
+
+{% endblock %}
