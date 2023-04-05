@@ -2,15 +2,9 @@ from .get_steamlist import getownedgames
 from .csv_to_db import db_connect, dataframe_to_sql
 from .get_psnlist import getpsngames
 
-#postgresql database parameters
-user='postgres'
-password=''
-host='localhost'
-port='5432'
-database='steamlist'
-schema='public'
-table='GamesLibrary_video_game'
-
+#sqlite database parameters
+database='sqlite:///db.sqlite3'
+table='steamlist_steam_game'
 
 def get_steam_db(apikey, steamid):
     #api key and steamid for data collection
@@ -25,15 +19,16 @@ def get_steam_db(apikey, steamid):
     #csv creation and storage in dataframe
     data = getownedgames(apikey=apikey, steamid=steamid)
     #establishing connection with sqlalchemy
-    db = db_connect(user,password,host,port,database)
+    db = db_connect(database)
     #databse filling if a ne entry is spotted
-    dataframe_to_sql(data, db, schema, table)
+    dataframe_to_sql(data, db, table)
 
 def get_psn_db(token):
-    test_token = True
+    
     #api key and steamid for data collection
     token = token
 
+    test_token = True
     if not token:
         test_token = False
         return test_token
@@ -42,6 +37,6 @@ def get_psn_db(token):
     data = getpsngames(token=token)
     print(len(data))
     #establishing connection with sqlalchemy
-    db = db_connect(user,password,host,port,database)
+    db = db_connect(database)
     #databse filling if a ne entry is spotted
-    dataframe_to_sql(data, db, schema, table)
+    dataframe_to_sql(data, db, table)

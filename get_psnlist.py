@@ -5,7 +5,7 @@ import pandas as pd
 data_columns = ['id','name','playtime_forever','img_icon_url','completed','played','date','genre','platform','appid','last_played','img_url']
 
 
-def getpsngames(token='NJXEoLmknISX0MCdn44bUyFlgKoXHkWNcckN4T0qRvhcQo34gVXbFL4jw5X1gTIN'):
+def getpsngames(token):
     psnawp = PSNAWP(token)
     client = psnawp.me()
     psn_list = list(client.title_stats())
