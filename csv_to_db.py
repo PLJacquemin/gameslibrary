@@ -3,7 +3,7 @@ import numpy as np
 import sys
 
 # establish connections
-def db_connect(db_user,db_password,db_host,db_port,db_database):
+def db_connect(db_database):
     print("*"*50)
     print("Database connection")
     sqlalch_connexion = db_database
