@@ -15,7 +15,7 @@ Les graphiques ont été réalisés avec ChartJS
 
 ## Points d'attention:
 
-En l'état, tout est configuré pour tourner avec une base de données locale Postgre.
+En l'état, tout est configuré pour tourner avec une base de données locale sqlite.
 Il est nécessaire de créer un projet Django puis de créer l'app GamesLibrary pour pouvoir utiliser les scripts.
 
 ## Liste des librairies utilisées:
