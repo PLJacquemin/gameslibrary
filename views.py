@@ -343,11 +343,11 @@ def db_steam(request):
             if steam_id and api_key:
                 print('API key entered and Steam ID')
                 get_steam_db(apikey=api_key, steamid=steam_id)
-                return HttpResponseRedirect('/GamesLibrary/db_steam?submitted=True')
+                return HttpResponseRedirect('/gameslibrary/db_steam?submitted=True')
             else:
                 print('Not keys')
                 get_steam_db()
-                return HttpResponseRedirect('/GamesLibrary/db_steam?submitted=True')
+                return HttpResponseRedirect('/gameslibrary/db_steam?submitted=True')
     else:
         if 'submitted' in request.GET:
             submitted = True
@@ -366,11 +366,11 @@ def db_psn(request):
             if token_psn:
                 print('PSN token entered')
                 get_psn_db(token=token_psn)
-                return HttpResponseRedirect('/GamesLibrary/db_psn?submitted=True')
+                return HttpResponseRedirect('/gameslibrary/db_psn?submitted=True')
             else:
                 print('Not keys')
                 get_psn_db()
-                return HttpResponseRedirect('/GamesLibrary/db_psn?submitted=True')
+                return HttpResponseRedirect('/gameslibrary/db_psn?submitted=True')
     else:
         if 'submitted' in request.GET:
             submitted = True
