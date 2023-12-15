@@ -55,19 +55,19 @@ bkg_colors = [
 
 # Premier onglet d'accueil
 def home(request):
-    return render(request, "home.html")
+    return render(request, "gl_home.html")
 
 # Onglet sur les tableaux de bord de la page d'accueil
 def dash_wiki(request):
-    return render(request, "dash_wiki.html")
+    return render(request, "gl_dash_wiki.html")
 
 # Onglet sur la base de données de la page d'accueil
 def data_wiki(request):
-    return render(request, "data_wiki.html")
+    return render(request, "gl_data_wiki.html")
 
 # Onglet "Work in Progress"
 def wip(request):
-    return render(request, "wip.html")
+    return render(request, "gl_wip.html")
 
 
 ######## Tableaux de bord
@@ -132,7 +132,7 @@ def year_view(request, year=datetime.date.today().year):
     total_playtime_minutes = "{:02d}".format(total_playtime % 60)
     game_list = qset.order_by("-date")
 
-    return render(request, 'year_view_fr.html', 
+    return render(request, 'gl_year_view.html', 
                       { 'finished_year': finished_year, 'year': year,
                        'dt_selection': dt_selection,
                        'avg_year':avg_year, 'avg_year_hours': avg_year_hours, 'avg_year_minutes': avg_year_minutes,
@@ -222,7 +222,7 @@ def global_view(request):
     spg_genre_hours=spg_genre['time_game']//60
     spg_genre_minutes=spg_genre['time_game']%60
 
-    return render(request, 'global_view.html', 
+    return render(request, 'gl_global_view.html', 
                   {'total': total,'finished': finished, 'played': played, 'unfinishable': unfinishable,
                    'progress_pl': progress_pl, 'progress_fi': progress_fi, 'progress_un': progress_un, 'progress_in': progress_in,
                    'untouched':untouched, 'best_platform':best_platform, 'worst_platform': worst_platform, 
@@ -242,7 +242,7 @@ def global_view(request):
 
 def all_games(request):
     game_list = Video_game.objects.all()
-    return render(request, 'games_list.html', {'game_list': game_list.order_by('-update_date')})
+    return render(request, 'gl_games_list.html', {'game_list': game_list.order_by('-update_date')})
 
 # Ajout d'un jeu
 
@@ -258,7 +258,7 @@ def add_game(request):
         if 'submitted' in request.GET:
             submitted = True
     
-    return render(request, 'add_game.html', {'form':form, 'submitted': submitted})
+    return render(request, 'gl_add_game.html', {'form':form, 'submitted': submitted})
 
 # Affichage des détails d'un jeu
 
@@ -280,7 +280,7 @@ def game_detail(request, game_id):
     g_hours=game.playtime_forever//60
     g_minutes=f"{game.playtime_forever%60:02d}"
 
-    return render(request, 'games_detail.html',  {'game': game, 'hltb_main': hltb_main, 'hltb_extra': hltb_extra, 'hltb_complete': hltb_complete
+    return render(request, 'gl_games_detail.html',  {'game': game, 'hltb_main': hltb_main, 'hltb_extra': hltb_extra, 'hltb_complete': hltb_complete
                                                  , 'g_hours': g_hours, 'g_minutes': g_minutes})
 
 # Mise à jour des jeux
@@ -291,7 +291,7 @@ def game_update(request, game_id):
     if form.is_valid():
         form.save()
         return redirect('steamlist:game-detail', game_id=game_id)
-    return render(request, 'update_game.html',  {'game': game, 'form': form})
+    return render(request, 'gl_update_game.html',  {'game': game, 'form': form})
 
 # Recherche dans la base de données
  
@@ -299,9 +299,9 @@ def search_game(request):
     if request.method == "POST":
         searched = request.POST['searched']
         games = Video_game.objects.filter(name__icontains=searched)
-        return render(request, 'search_games.html', {'searched':searched, 'games':games})
+        return render(request, 'gl_search_games.html', {'searched':searched, 'games':games})
     else:
-        return render(request, 'search_games.html', {})
+        return render(request, 'gl_search_games.html', {})
 
 # Mode roulette: affiche les détails d'un jeu aléatoire
 
@@ -323,7 +323,7 @@ def roulette(request):
         hltb_complete='- H'
 
 
-    return render(request, 'roulette.html',  {'game': game, 'hltb_main': hltb_main, 'hltb_extra': hltb_extra, 'hltb_complete': hltb_complete})
+    return render(request, 'gl_roulette.html',  {'game': game, 'hltb_main': hltb_main, 'hltb_extra': hltb_extra, 'hltb_complete': hltb_complete})
 
 # Suppression d'un jeu
 
@@ -354,7 +354,7 @@ def db_steam(request):
         elif 'error' in request.GET:
             error = True
     
-    return render(request, 'database.html', {'submitted': submitted, 'error': error})
+    return render(request, 'gl_database.html', {'submitted': submitted, 'error': error})
 
 # Mise à jour de la base de données par récupération des données du PSN
 
@@ -377,7 +377,7 @@ def db_psn(request):
         elif 'error' in request.GET:
             error = True
     
-    return render(request, 'database_psn.html', {'submitted': submitted, 'error': error})
+    return render(request, 'gl_database_psn.html', {'submitted': submitted, 'error': error})
 
 ######## Partie "Graphiques Annuels"
 
