@@ -252,7 +252,7 @@ def add_game(request):
         form = GameForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/steamlist/add_game?submitted=True')
+            return HttpResponseRedirect('/GamesLibrary/add_game?submitted=True')
     else:
         form = GameForm
         if 'submitted' in request.GET:
@@ -290,7 +290,7 @@ def game_update(request, game_id):
     form = GameForm(request.POST or None, instance=game)
     if form.is_valid():
         form.save()
-        return redirect('steamlist:game-detail', game_id=game_id)
+        return redirect('GamesLibrary:game-detail', game_id=game_id)
     return render(request, 'gl_update_game.html',  {'game': game, 'form': form})
 
 # Recherche dans la base de données
@@ -330,7 +330,7 @@ def roulette(request):
 def game_delete(request, game_id):
 	game = Video_game.objects.get(pk=game_id)
 	game.delete()
-	return redirect('steamlist:games-list')	
+	return redirect('GamesLibrary:games-list')	
 
 # Mise à jour de la base de données par récupération des données de steam
 
@@ -343,11 +343,11 @@ def db_steam(request):
             if steam_id and api_key:
                 print('API key entered and Steam ID')
                 get_steam_db(apikey=api_key, steamid=steam_id)
-                return HttpResponseRedirect('/steamlist/db_steam?submitted=True')
+                return HttpResponseRedirect('/GamesLibrary/db_steam?submitted=True')
             else:
                 print('Not keys')
                 get_steam_db()
-                return HttpResponseRedirect('/steamlist/db_steam?submitted=True')
+                return HttpResponseRedirect('/GamesLibrary/db_steam?submitted=True')
     else:
         if 'submitted' in request.GET:
             submitted = True
@@ -366,11 +366,11 @@ def db_psn(request):
             if token_psn:
                 print('PSN token entered')
                 get_psn_db(token=token_psn)
-                return HttpResponseRedirect('/steamlist/db_psn?submitted=True')
+                return HttpResponseRedirect('/GamesLibrary/db_psn?submitted=True')
             else:
                 print('Not keys')
                 get_psn_db()
-                return HttpResponseRedirect('/steamlist/db_psn?submitted=True')
+                return HttpResponseRedirect('/GamesLibrary/db_psn?submitted=True')
     else:
         if 'submitted' in request.GET:
             submitted = True
