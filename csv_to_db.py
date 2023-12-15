@@ -1,5 +1,7 @@
 from sqlalchemy import create_engine, exc, update, Table, MetaData, and_
 import numpy as np
+from datetime import datetime
+
 import sys
 
 # establish connections
