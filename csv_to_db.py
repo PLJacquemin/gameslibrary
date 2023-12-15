@@ -25,3 +25,12 @@ def dataframe_to_sql(db_dataframe, db_engine, db_table):
             db_dataframe.iloc[i:i+1].to_sql(name=db_table, con=db_engine, index=False, if_exists= 'append')
         except exc.IntegrityError:
             pass
+        
+        stmt = (
+            stable.update().values(playtime_forever = int(db_dataframe.iloc[i:i+1]['playtime_forever'].values[0])).where((stable.c.name == db_dataframe.iloc[i:i+1]['name'].values[0])&(stable.c.platform == db_dataframe.iloc[i:i+1]['platform'].values[0]))
+            )
+        db_engine.execute(stmt)
+        stmt = (
+            stable.update().values(update_date = datetime.strptime(db_dataframe.iloc[i:i+1]['update_date'].values[0], '%Y-%m-%d')).where((stable.c.name == db_dataframe.iloc[i:i+1]['name'].values[0])&(stable.c.platform == db_dataframe.iloc[i:i+1]['platform'].values[0]))
+            )
+        db_engine.execute(stmt)

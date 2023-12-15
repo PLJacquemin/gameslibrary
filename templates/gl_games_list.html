@@ -1,34 +1,36 @@
 {% extends 'gl_base.html' %}
 
 {% block content %}
-<div class="card text-dark bg-light">
-  <div class="card-header">
-      <h4>Random list of games</h4>
-  </div>
-  <div class="card-body"></div>
+<head>
+</head>
+<body>
+<div class="container mt-5">
+  <table
+    id="datatable"
+    class="table table-striped" style="width:100%">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Editeur</th>
+        <th>Plateforme</th>
+        <th>Année de sortie</th>
+        <th>Dernier lancement</th>
+        <th>Dernière modification</th>
+      </tr>
+    </thead>
+    <tbody>
     {% for game in game_list %}
-
-      <table class="table">
-        <tbody>
-          <tr>
-            <td>
-              <img src="{{game.img_icon_url}}" style="width: 32px;height:32px"/>   <a href="{% url 'GamesLibrary:game-detail' game.id %}">{{game.name}}</a><br/>
-             
-            </td>
-            <td>
-              <div align="right">
-                <em><small>Last played: {{game.last_played|date:'Y-m-d'}}</small></em>
-                <a href="{% url 'GamesLibrary:game-update' game.id %}" class="btn btn-dark btn-sm">Update</a>    
-                <a href="{% url 'GamesLibrary:game-delete' game.id %}" class="btn btn-danger btn-sm">Delete</a>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <tr>
+      <td><p class="card-text"><a href="{% url 'steamlist:game-detail' game.id %}">{{game.name}}</td>
+      <td>{{game.publisher}}</td>
+      <td>{{game.platform}}</td>
+      <td>{{game.release_year}}</td>
+      <td>{{game.last_played|date:'Y/m/d'}}</td>
+      <td>{{game.update_date|date:'Y/m/d'}}</td>
+    </tr>
     {% endfor %}
-  
-  </div>
+  </tbody>
+</table>
 </div>
-    
-
+</body>
 {% endblock %}

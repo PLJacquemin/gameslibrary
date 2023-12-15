@@ -1,0 +1,49 @@
+
+
+.card-deck {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+
+.card {
+    margin-top: .1em;
+    padding: 0.5em 0.5em 0.5em;
+    border-radius: .5em !important;
+    text-align: left;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+.card-img-top {
+    width: 100% !important;
+    height: 6vw !important;
+    object-fit: cover;
+    border-radius: .5em !important;
+}
+
+
+.card-footer {
+    color: black !important;
+    background-color: white !important;
+    position:absolute;
+    bottom:0;
+}
+
+.card-header {
+    color: white !important;
+    background-color: darkslategrey !important;
+    border-radius: .5em !important;
+}
+
+.custom-col {
+
+    width:20%;
+    float:left;
+    padding-left:15px;
+    padding-right:15px;
+  
+  }
+
+  .navbar {
+    background-color: darkslategrey !important;
+}

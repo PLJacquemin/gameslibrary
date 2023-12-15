@@ -9,9 +9,15 @@
       <h4>Have you ever played to ... ?</h4>
     </div>
     <div class="card-body">
-      <img src="{{game.img_icon_url}}" style="width: 32px;height:32px"/>   {{game.name}}
+      <img src="{{game.img_icon_url}}" style="width: 32px;height:32px"/><a href="{% url 'GamesLibrary:game-detail' game.id %}">{{game.name}}</a>
     </div>
     <img src="{{game.img_url}}" class="card-img-bottom">
+    <li class="list-group-item">
+      Time to beat:
+      <p class="text-success"><span class="badge rounded-pill bg-success">{{hltb_main}}</span>  Main</p>
+      <p class="text-warning"><span class="badge rounded-pill bg-warning text-dark">{{hltb_extra}}</span>   Main+Extra</p>
+      <p class="text-danger"><span class="badge rounded-pill bg-danger">{{hltb_complete}}</span>   Completionist</p>
+    </li>
       <br/><br/>
         <a href="{% url 'GamesLibrary:game-update' game.id %}" class="btn btn-secondary">Update</a>
         <a href="{% url 'GamesLibrary:game-delete' game.id %}" class="btn btn-danger">Delete</a>

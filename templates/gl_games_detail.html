@@ -2,55 +2,185 @@
 
 {% block content %}
 
-<div class="panel panel-default" style="width: 500px">
-    <div card="card">
-      <div class="card-header">
-        <h4><img src="{{game.img_icon_url}}" style="width: 32px;height:32px"/>   {{game.name}}: Game details</h4>
-      </div>
-      <div class="card-body">
-        <ul class="list-group">
-          <li class="list-group-item">Playing time (minutes): {{g_hours}} H {{g_minutes}} min
-          <li class="list-group-item">Genre: {{game.genre}}
-          <li class="list-group-item">Platform: {{game.platform}}
-          <li class="list-group-item">
-            <div class="form-check">
-              <label class="form-check-label" for="flexCheckIndeterminate">
-                Launched
-              </label>
-              {% if game.played %}
-              <input class="form-check-input" type="checkbox" checked disabled>
-              {% else %}
-              <input class="form-check-input" type="checkbox" disabled>
-              {% endif %}
-            </div>
-          <li class="list-group-item">
-            <div class="form-check">
-              <label class="form-check-label" for="flexCheckIndeterminate">
-                Finished
-              </label>
-              {% if game.completed %}
-              <input class="form-check-input" type="checkbox" checked disabled>
-              {% else %}
-              <input class="form-check-input" type="checkbox" disabled>
-              {% endif %}
-            </div>
-          <li class="list-group-item">Finish Date: <input class="form-control" type="date" value={{game.date|date:'Y-m-d'}}>
-          <li class="list-group-item">Last Played: <input class="form-control" type="date" value={{game.last_played|date:'Y-m-d'}}>
-          <li class="list-group-item">
-            Time to beat:
-            <p class="text-success"><span class="badge rounded-pill bg-success">{{hltb_main}}</span>  Main</p>
-            <p class="text-warning"><span class="badge rounded-pill bg-warning text-dark">{{hltb_extra}}</span>   Main+Extra</p>
-            <p class="text-danger"><span class="badge rounded-pill bg-danger">{{hltb_complete}}</span>   Completionist</p>
-          </li>
-      </ul>
+<br/>
+<div class="container">
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+      <div class="card h-100 text-white" style="background-color: #EDAE49 !important;">
+        <div class="card-body d-flex align-items-center">
+          <h2 class="card-text d-flex align-items-center"><strong>{{game.name}}</strong></h2>
+        </div>
       </div>
     </div>
-    <img src='{{game.img_url}}' class="card-img-bottom">
-    <br/><br/>
-    <div>
-        <a href="{% url 'GamesLibrary:game-update' game.id %}" class="btn btn-secondary">Update</a>
-        <a href="{% url 'GamesLibrary:game-delete' game.id %}" class="btn btn-danger">Delete</a>
+    <div class="col-1">
+      {% if game.num_stars > 6 %}
+      <div class="card h-100 text-white" style="background-color: #8EA604 !important;">
+        <div class="card-body align-items-center">
+          <h2 class="card-text" align="center">{{game.num_stars}}</h2>
+        </div>
+      </div>
+      {% elif game.num_stars < 4 %}
+      <div class="card h-100 text-white d-flex align-items-center mb-3" style="background-color: #BF3100 !important;">
+        <div class="card-body d-flex align-items-center">
+          <h2 class="card-text d-flex align-items-center" align="center">{{game.num_stars}}</h2>
+        </div>
+      </div>
+      {% else %}
+      <div class="card h-100 text-white mb-3" style="background-color: #F9A03F !important;">
+        <div class="card-body d-flex align-items-center">
+          <h2 class="card-text" align="center">{{game.num_stars}}</h2>
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
+  <br/>
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-md-2">
+      <div class="card h-100 text-white mb-3" style="background-color:  #D1495B  !important;">
+        <div class="card-body">
+          <p align="center">Année</p>
+          <h2 align="center">{{game.release_year}}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 text-white mb-3" style="background-color:  #00798C  !important;">
+        <div class="card-body">
+          <p align="center">Editeur</p>
+          <h2 align="center">{{game.publisher}}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card h-100 text-white mb-3" style="background-color:  #30638E  !important;">
+        <div class="card-body">
+          <p align="center">Genre</p>
+          <h3 align="center">{{game.genre}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-md-2">
+      <div class="card h-100 text-white mb-3" style="background-color:   #003D5B   !important;">
+        <div class="card-body">
+          <p align="center">Plateforme</p>
+          <h3 align="center">{{game.platform}}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card h-100 text-white" style="background-color: #EDAE49 !important;">
+        <div class="card-body">
+          <p align="center">Jeu lancé?</p>
+          {% if game.played %}
+          <h2 align="center">Oui</h2>
+          {% else %}
+          <h2 align="center">Non</h2>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card h-100 text-white mb-3" style="background-color:  #D1495B  !important;">
+        <div class="card-body">
+          <p align="center">Dernier lancement</p>
+          {% if game.played %}
+          <h2 align="center">{{game.last_played|date:'d/m/Y'}}</h2>
+          {% else %}
+          <h2 align="center">Pas encore lancé</h2>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card h-100 text-white mb-3" style="background-color:  #00798C  !important;">
+        <div class="card-body">
+          <p align="center">Temps de jeu</p>
+          {% if g_hours > 0 %}
+          <h2 align="center">{{g_hours}} H {{g_minutes}}</h2>
+          {% else %}
+          <h2 align="center">{{g_minutes}} min</h2>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-md-2">
+      <div class="card h-100 text-white mb-3" style="background-color:  #30638E  !important;">
+        <div class="card-body">
+          <p align="center">Jeu terminé?</p>
+          {% if game.unfinishable %}
+          <p align="center">Impossible à finir</p>
+          {% elif game.completed %}
+          <h2 align="center">Oui</h2>
+          {% else %}
+          <h2 align="center">Non</h2>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card h-100 text-white mb-3" style="background-color:  #003D5B  !important;">
+        <div class="card-body">
+          <p align="center">Terminé le</p>
+          {% if game.completed %}
+          <h2 align="center">{{game.date|date:'d/m/Y'}}</h2>
+          {% else %}
+          <h2 align="center">Non fini</h2>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 text-white mb-3" style="background-color:   #EDAE49   !important;">
+        <div class="card-body d-flex align-items-center">
+          <img src="{{game.img_url}}" class="card-img-top rounded-2"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-md-3">
+      <div class="card h-100">
+        <div class="card-header" style="background-color: #D1495B !important;">
+          <p align="center">HLTB</p>
+        </div>
+        <div class="card-body">
+          <p class="text-success"><span class="badge rounded-pill bg-success">{{hltb_main}}</span>  Main</p>
+          <p class="text-warning"><span class="badge rounded-pill bg-warning text-dark">{{hltb_extra}}</span>   Main+Extra</p>
+          <p class="text-danger"><span class="badge rounded-pill bg-danger">{{hltb_complete}}</span>   Completionist</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card h-100 text-white mb-3" style="background-color:  #00798C  !important;">
+        <div class="card-body">
+          <p>{{game.critic}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col">
+      <p><a href="{% url 'GamesLibrary:game-update' game.id %}" class="btn btn-dark btn-sm">Update</a> <small><i>Dernière mise à jour le {{game.update_date|date:'d/m/Y'}}</i></small></p>
+      <p><a href="{% url 'GamesLibrary:game-delete' game.id %}" class="btn btn-danger btn-sm">Delete</a></p>
+    </div>
+  </div>
+  <br/>
+  <br/>
+</div>
 
   {% endblock %}

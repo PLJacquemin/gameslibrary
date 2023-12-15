@@ -3,107 +3,234 @@
 {% block content %}
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- script src=" https://cdn.jsdelivr.net/npm/chart.js@~4.1.1"></script>
+  <script src="../build/index.umd.js"></script>
+  <script src=" https://cdn.jsdelivr.net/npm/d3-random@latest/dist/d3-random.min.js"></script>
+  <script src="./utils.js"></script-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
-
-<div class="card mx-auto" style="width: 800px">
-    <div class="card-body">
-        <h5 class="card-title">You possesse <strong>{{total}} games</strong></h5>
-        <p class="card-text">On those {{total}} games:</p>
+  <div class="container rounded-2" style="background-color:  #d5dbdb  !important; color: black">
+    <div class="row">
       </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><strong>{{finished}} games</strong> were finished ({{progress_fi}}% of your library)</li>
-        <li class="list-group-item"><strong>{{played}} games</strong> were launch at least once but never finished ({{progress_pl}}% of your library)</li>
-        <li class="list-group-item"><strong>{{untouched}} games</strong> were bought but never ever launched ({{progress_un}}% of your library)</li>
-      </ul>
-      <div class="card-body">
-        <div class="progress">
-            <div class="progress-bar bg-success" role="progressbar" 
-            style="width: {{progress_fi}}%" aria-valuenow="25" aria-valuemin="0" 
-            aria-valuemax="100">Finished</div>
-            <div class="progress-bar" role="progressbar" 
-            style="width: {{progress_pl}}%" aria-valuenow="10" aria-valuemin="0" 
-            aria-valuemax="100">Played</div>
-            <div class="progress-bar bg-danger" role="progressbar" 
-            style="width: {{progress_un}}%" aria-valuenow="25" aria-valuemin="0" 
-            aria-valuemax="100">Untouched</div>
-        </div>
+      <div class="col">
+        <h2 align="center">Données globales</h2>
       </div>
-</div>
-<br/>
-<div class="row mx-auto" style="width: 828px">
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Platforms summary</h5>
-          <p class="card-text">Your games are present on <strong>{{number_platform}} different platforms</strong>.</p>
-        </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">The platform where you have the most games is <strong>{{best_platform.platform}}</strong> where you have 
-            <strong>{{best_platform.total}} different games</strong>. You spent <strong>{{most_time_cal.years}} year(s), {{most_time_cal.days}} 
-                day(s), {{most_time_cal.hours}} hour(s) and {{most_time_cal.minutes}} minute(s)</strong> on <strong>{{best_platform.platform}}</strong>.</li>
-        <li class="list-group-item">But you have only <strong>{{worst_platform.total}} games</strong> on 
-            <strong>{{worst_platform.platform}}</strong>. That makes <strong>{{worst_platform.platform}}</strong> 
-            your least favorite place to play games. The total amount of time spent on <strong>{{worst_platform.platform}}</strong> is <strong>{{less_time_cal.years}} year(s), {{less_time_cal.days}} 
-                day(s), {{less_time_cal.hours}} hour(s) and {{less_time_cal.minutes}} minute(s)</strong></li>
-        <li class="list-group-item">Anyways, you lost <strong>{{total_time_cal.years}} year(s), {{total_time_cal.days}} 
-            day(s), {{total_time_cal.hours}} hour(s) and {{total_time_cal.minutes}} minute(s)</strong> of your life playing 
-            videogames, congratulations!
-      </ul>
     </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-body">
-            <div id="container5" style="width: 150%;">
-                <canvas id="global-platform-pie" data-url="{% url 'GamesLibrary:global-platform-pie' %}" width="358" height="400"></canvas>
+  </div>
+  <br/>
+  <div class="container">
+    <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <div class="card h-100 text-white mb-3" style="background-color: #EDAE49 !important;">
+                <div class="card-header border-0 fs-6" align="center" style="background-color: #EDAE49 !important;">
+                  <strong>Jeux possédés</strong>
+                </div>
+                <div class="card-body">
+                  <p class="card-text fs-2" align="center"><strong>{{total}}</strong></p>
+                </div>
+              </div>
             </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col">
+              <div class="card h-100 text-white mb-3" style="background-color:  #D1495B  !important;">
+                <div class="card-header border-0 fs-6" align="center" style="background-color:  #D1495B  !important;">
+                  <strong>Jeux terminés</strong>
+                </div>
+                <div class="card-body">
+                  <p class="card-text fs-3" align="center"><strong>{{finished}}</strong></p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100 text-white mb-3" style="background-color:  #00798C  !important;">
+                <div class="card-header border-0 fs-6" align="center" style="background-color:  #00798C  !important;">
+                  <strong>Jeux lancé (non finis)</strong>
+                </div>
+                <div class="card-body">
+                  <p class="card-text fs-3" align="center"><strong>{{played}}</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col">
+              <div class="card h-100 text-white mb-3" style="background-color:  #30638E  !important;">
+                <div class="card-header border-0 fs-6" align="center" style="background-color:  #30638E  !important;">
+                  <strong>MMO/Multi/GaaS</strong>
+                </div>
+                <div class="card-body">
+                  <p class="card-text fs-3" align="center"><strong>{{unfinishable}}</strong></p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100 text-white mb-3" style="background-color:   #003D5B   !important;">
+                <div class="card-header border-0 fs-6" align="center" style="background-color:  #003D5B  !important;">
+                  <strong>Jamais lancés</strong>
+                </div>
+                <div class="card-body">
+                  <p class="card-text fs-3" align="center"><strong>{{untouched}}</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-<br/>
-<div class="row mx-auto" style="width: 828px">
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <div id="container2" style="width: 120%; ">
-          <canvas id="global-genre-pie" data-url="{% url 'GamesLibrary:global-genre-pie' %}" width="350" height="500"></canvas>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-          <div id="container3" style="width: 150%;">
-            <canvas id="time-genre-chart" data-url="{% url 'GamesLibrary:time-genre-chart' %}" width="350" height="500"></canvas>
+      <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <div id="container2">
+                <canvas id="global-owned-pie" data-url="{% url 'GamesLibrary:global-owned-pie' %}" width="400" height="250"></canvas>
+              </div>
           </div>
       </div>
     </div>
-  </div>      
-</div>
-<br/>
-<div class="card mx-auto" style="width: 800px">
-    <div class="card-body">
-        <h5 class="card-title">There are <strong>{{number_genre}} different genres</strong> of games in your library</h5>
+    </div>
+  </div>
+  <br/>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="container">
+          <div class="card h-100 text-white mb-3" style="background-color: #EDAE49 !important;">
+            <div class="card-body">
+              <p class="card-text fs-4" align="center">Temps passé dans des jeux vidéo: <strong>
+                {% if total_time_cal.years > 1 %}
+                {{total_time_cal.years}} ans,
+                {% else %}
+                {{total_time_cal.years}} an,
+                {% endif %} 
+                {% if total_time_cal.days > 1 %}
+                {{total_time_cal.days}} jours,
+                {% else %}
+                {{total_time_cal.days}} jour,
+                {% endif %}
+                {% if total_time_cal.hours > 1 %}
+                {{total_time_cal.hours}} heures
+                {% else %}
+                {{total_time_cal.hours}} heure
+                {% endif %}
+                et
+                {% if total_time_cal.minutes > 1 %}
+                {{total_time_cal.minutes}} minutes
+                {% else %}
+                {{total_time_cal.minutes}} minute
+                {% endif %}
+                </strong></p>
+            </div>
+          </div>
+        </div>
       </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><strong>{{best_genre.genre}}</strong> is the one with the most games (<strong>{{best_genre.total}} games
-            for a total of {{best_genre_hours}} H {{best_genre_minutes}} minutes</strong>).
-        </li>
-        <li class="list-group-item">The genre with the less games is <strong>{{low_genre.genre}}</strong> with only <strong>{{low_genre.total}} games
-            for a total of {{low_genre_hours}} H {{low_genre_minutes}} minutes</strong></li>
-        <li class="list-group-item">The genre where you spent the most time is <strong>{{long_genre.genre}}</strong> with <strong>{{long_genre.total}} games
-                for a total of {{long_genre_hours}} H {{long_genre_minutes}} minutes</strong>. The one where you spent the less time is <strong>{{short_genre.genre}} ({{short_genre_hours}} H {{short_genre_minutes}} minutes)</strong></li>
-        <li class="list-group-item">But the genre where you spent the most average time per game is <strong>{{lpg_genre.genre}}</strong> with <strong>{{lpg_genre.total}} games
-                    ({{lpg_genre_hours}} H {{lpg_genre_minutes}} minutes per game)</strong>. At the opposite, the genre with the shortest time per game is <strong>{{spg_genre.genre}} 
-                    ({{spg_genre_hours}} H {{spg_genre_minutes}} minutes per game)</strong></li>
-        </ul>
-</div>
+    </div>
+  </div>
+  <br/>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <div class="card h-100 text-white mb-3" style="background-color: #EDAE49 !important;">
+                <div class="card-header border-0 fs-6" align="center" style="background-color: #EDAE49 !important;">
+                  <strong>Genres différents</strong>
+                </div>
+                <div class="card-body">
+                  <p class="card-text fs-2" align="center"><strong>{{number_genre}}</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col">
+              <div class="card h-100 text-white mb-3" style="background-color:  #D1495B  !important;">
+                <div class="card-header border-0 fs-6" align="center" style="background-color:  #D1495B  !important;">
+                  <strong>Genre le plus représenté</strong>
+                </div>
+                <div class="card-body">
+                  <p class="card-text fs-3" align="center"><strong>{{best_genre.genre}}</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col">
+              <div class="card h-100 text-white mb-3" style="background-color:  #00798C  !important;">
+                <div class="card-header border-0 fs-6" align="center" style="background-color:  #00798C  !important;">
+                  <strong>Nombre de jeux "{{best_genre.genre}}"</strong>
+                </div>
+                <div class="card-body">
+                  <p class="card-text fs-3" align="center"><strong>{{best_genre.total}}</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <div id="container2">
+              <canvas id="global-genre-pie" data-url="{% url 'GamesLibrary:global-genre-pie' %}" width="400" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <div class="card h-100 text-white mb-3" style="background-color:  #30638E  !important;">
+                <div class="card-header border-0 fs-6" align="center" style="background-color:  #30638E  !important;">
+                  <strong>Genre chronophage</strong>
+                </div>
+                <div class="card-body">
+                <p class="card-text fs-3" align="center"><strong>{{long_genre.genre}}</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col">
+              <div class="card h-100 text-white mb-3" style="background-color:  #003D5B  !important;">
+                <div class="card-header border-0 fs-6" align="center" style="background-color:  #003D5B  !important;">
+                  <strong>Temps dans "{{long_genre.genre}}"</strong>
+                </div>
+                <div class="card-body">
+                  <p class="card-text fs-3" align="center"><strong>{{long_genre_hours}} H {{long_genre_minutes}}</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col">
+              <div class="card h-100 text-white mb-3" style="background-color: #EDAE49 !important;">
+                <div class="card-header border-0 fs-6" align="center" style="background-color: #EDAE49 !important;">
+                  <strong>Genre sous-représenté</strong>
+                </div>
+                <div class="card-body">
+                  <p class="card-text fs-2" align="center"><strong>{{low_genre.genre}}</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<br/>
 </body>
 <!-- best_genre, best_genre_hours, best_genre_minutes,
                    'low_genre':low_genre, 'low_genre_hours':low_genre_hours, 'low_genre_minutes':low_genre_minutes,
@@ -239,11 +366,12 @@
             },
             options: {
               legend: {
-                display: true
-                },
-              responsive: false,
-              title: {
                 display: true,
+                position: 'right'
+                },
+              responsive: true,
+              title: {
+                display: false,
                 text: 'Games by genre'
               }
             }
@@ -255,5 +383,47 @@
     });
 
   </script>
+
+<script>
+
+  $(function () {
+
+    var $globalOwnedPie = $("#global-owned-pie");
+    $.ajax({
+      url: $globalOwnedPie.data("url"),
+      success: function (data) {
+
+        var ctx = $globalOwnedPie[0].getContext("2d");
+
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: data.labels,
+              datasets: [{
+                  label: 'Jeux possédés',
+                  data: data.data,
+                  hoverOffset: 4,
+                  backgroundColor: data.bkgrnd
+              }],
+          },
+          options: {
+              responsive: true,
+              title: {
+                display: false,
+                text: 'Jeux possédés'
+              },
+              legend: {
+                display: true,
+                position: 'right'
+                },
+          }
+        });
+
+      }
+    });
+
+  });
+
+</script>
 
 {% endblock %}

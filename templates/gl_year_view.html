@@ -3,297 +3,922 @@
 {% block content %}
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- script src=" https://cdn.jsdelivr.net/npm/chart.js@~4.1.1"></script>
-    <script src="../build/index.umd.js"></script>
-    <script src=" https://cdn.jsdelivr.net/npm/d3-random@latest/dist/d3-random.min.js"></script>
-    <script src="./utils.js"></script-->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- script src=" https://cdn.jsdelivr.net/npm/chart.js@~4.1.1"></script>
+  <script src="../build/index.umd.js"></script>
+  <script src=" https://cdn.jsdelivr.net/npm/d3-random@latest/dist/d3-random.min.js"></script>
+  <script src="./utils.js"></script-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<div class="dropdown" align="left">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-      Year Selection
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-      {% for date in dt_selection %}
-      <li><a class="dropdown-item" href="{% url 'GamesLibrary:year-view-dt' date %}">{{date}}</a></li>
-      {% endfor %}
-    </ul>
+<div class="container rounded-2" style="background-color:  #d5dbdb  !important; color: black">
+<div class="row">
+  <div class="col-md-2">
+    <div class="dropdown pt-1" align="left">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+        Sélection de l'année
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        {% for date in dt_selection %}
+        <li><a class="dropdown-item" href="{% url 'GamesLibrary:year-view-dt' date %}">{{date}}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <h2 align="center">Résumé de l'année {{year}}</h2>
+  </div>
+</div>
 </div>
 <br/>
-<div>
-  <div align="center">
-    <h2>Everything that happened in {{year}}</h2>
-    <br/>
+<div class="container">
+<div class="row">
+  <div class="col-md-8">
+    <div class="card h-100">
+      <div class="card-body">
+        <div id="container1">
+          <canvas id="game-chart" data-url="{% url 'GamesLibrary:game-chart' year %}" width="500" height="300"></canvas>
+        </div>
+      </div>
+    </div>
   </div>
-    <table align="center" style="width:800px" >
-        <colgroup span="2" class="columns"></colgroup>
-        <tr>
-            <td>
-                <div id="container1" style="width: 120%;">
-                        <canvas id="game-chart" data-url="{% url 'GamesLibrary:game-chart' year %}" width="400" height="300"></canvas>
-                </div>
-            </td>
-            <td>
-                <div id="container2" style="width: 120%; ">
-                        <canvas id="time-chart" data-url="{% url 'GamesLibrary:time-chart' year %}" width="400" height="300"></canvas>
-                </div>
-            </td>
-        </tr>
-    </table>
-    <table align="center" style="width:800px" >
-        <tr>
-            <td valign="top" align="left">
-              <br/><br/><br/>
-              <div class="card" style="width: 18rem;">
-                <div class="card-header">
-                  Summary of {{year}}
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">Games finished this year: {{finished_year}}</li>
-                  <li class="list-group-item">Average time per game: {{avg_year}}H</li>
-                  <li class="list-group-item">Median time per game: {{med_year}}H</li>
-                  <li class="list-group-item">Most time spent: {{max_year}}H
-                    <p class="card-text" align="right"><small class="text-muted">{{long_game.name}}: Total play time</small></p>
-                  </li>
-                  <li class="list-group-item">Less time spent: {{min_year}}H
-                    <p class="card-text" align="right"><small class="text-muted">{{short_game.name}}: Total play time</small></p>
-                  </li>
-                </ul>
-              </div>
-            </td>
-            <td>
-            <div id="container3" style="width: 150%; ">
-                <canvas id="genre-pie" data-url="{% url 'GamesLibrary:genre-pie' year %}" width="500" height="400"></canvas>
+  <div class="col-md-4">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white mb-3" style="background-color: #EDAE49 !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color: #EDAE49 !important;">
+              <strong>Jeux joués</strong>
             </div>
-            </td>
-        </tr>
-    </table>
-    <table align="center" style="width:800px" >
-      <br/><br/>
-      <tr>
-        <td>
-        <div class="card-group">
-          <div class="card">
             <div class="card-body">
-              <h5 class="card-title">First Game of {{year}}</h5>
-              <p class="card-text"><img src="{{first_game.img_icon_url}}" class="card-img-top" alt="{{first_game.name}}" style="width: 32px;height:32px"> {{first_game.name}}</p>
-              <p class="card-text"><strong>{{first_game.name}}</strong> was the first game you finished in {{year}}. The game was completed the <strong>{{first_game.date|date:'Y-m-d'}}</strong> and you spent <strong>{{first_game_hours}} hours and {{first_game_minutes}} minutes</strong> in the game.</p>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Last Game of {{year}}</h5>
-              <p class="card-text"><img src="{{last_game.img_icon_url}}" class="card-img-top" alt="{{last_game.name}}" style="width: 32px;height:32px"> {{last_game.name}}</p>
-              <p class="card-text">The last game you finished in {{year}} was <strong>{{last_game.name}}</strong>. <strong>{{last_game_hours}} hours and {{last_game_minutes}} minutes</strong> were spent in the game and you finished it the <strong>{{last_game.date|date:'Y-m-d'}}</strong>.</p>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Platform of {{year}}</h5>
-              <p class="card-text">Most of your games were played on {{best_platform.platform}} ({{best_platform.total}} games)</p>
-              <div id="container4" style="width: 150%; ">
-              <canvas id="platform-pie" data-url="{% url 'GamesLibrary:platform-pie' year %}" width="230" height="200"></canvas></p>
-            </div>
+              <p class="card-text fs-2" align="center"><strong>{{total_played}}</strong></p>
             </div>
           </div>
         </div>
-      </td>
-      </tr>
-    </table>
+        <div class="col">
+          <div class="card h-100 text-white mb-3" style="background-color:  #D1495B  !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #D1495B  !important;">
+              <strong>Jeux terminés</strong>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-3" align="center"><strong>{{finished_year}}</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white mb-3" style="background-color:  #00798C  !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #00798C  !important;">
+              <strong>GAAS/Multi</strong>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-3" align="center"><strong>{{gaas_played}}</strong></p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white mb-3" style="background-color:  #30638E  !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #30638E  !important;">
+              <strong>Sans fin</strong>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-3" align="center"><strong>{{unfi_played}}</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white mb-3" style="background-color:   #003D5B   !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #003D5B  !important;">
+              <strong>Plateformes</strong>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-3" align="center"><strong>{{number_platform}}</strong></p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white mb-3 fs-6" style="background-color:  #EDAE49   !important;">
+            <div class="card-header border-0" align="center" style="background-color:  #EDAE49   !important;">
+              <strong>Plateforme préférée</strong>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-4" align="center"><strong>{{best_platform.platform}}</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<br/><br/>
+<div class="container">
+<div class="row">
+  <div class="col-md-4">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white mb-3" style="background-color:  #D1495B   !important;">
+            <div class="card-body">
+              <p><strong>Temps moyen par jeu</strong></p>
+              <p class="card-text fs-3" align="center">{{avg_year_hours}} H {{avg_year_minutes}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white mb-3" style="background-color:  #00798C   !important;">
+            <div class="card-body">
+              <p><strong>Temps médian par jeu</strong></p>
+              <p class="card-text fs-3" align="center">{{med_year_hours}} H {{med_year_minutes}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white mb-3" style="background-color:  #30638E   !important;">
+            <div class="card-body">
+              <p><strong>Temps total passé sur les jeux solos</strong></p>
+              <p class="card-text fs-3" align="center">{{total_playtime_hours}} H {{total_playtime_minutes}} min</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card h-100">
+      <div class="card-body">
+      <div id="container2">
+        <canvas id="time-chart" data-url="{% url 'GamesLibrary:time-chart' year %}" width="400" height="225"></canvas>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+<br/><br/>
+<div class="container">
+<div class="row">
+  <div class="col-md-8">
+    <div class="card h-100">
+      <div class="card-body">
+        <br/><br/>
+        <div id="container3">
+          <canvas id="genre-pie" data-url="{% url 'GamesLibrary:genre-pie' year %}" width="400" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white mb-3" style="background-color:  #003D5B   !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #003D5B   !important;">
+              <strong>Nombre de genres de jeux différents</strong>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-3" align="center"><strong>{{number_genre}}</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white mb-3" style="background-color:  #EDAE49   !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #EDAE49   !important;">
+              <strong>Genre le plus apprécié</strong>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-3" align="center"><strong>{{best_genre.genre}}</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white mb-3" style="background-color:  #D1495B   !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #D1495B   !important;">
+              <strong>Nombre de jeux dans le genre le plus apprécié</strong>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-3" align="center"><strong>{{best_genre.total}}</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<br/><br/>
+<div class="container rounded-2" style="background-color:  #d5dbdb  !important; color: black">
+<div class="row">
+  <div class="col">
+    <h2 align="center">Informations détaillées</h2>
+  </div>
+</div>
+</div>
+<br/>
+<div class="container">
+<div class="row">
+  <div class="col">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #EDAE49 !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #EDAE49 !important;">
+              <p><strong>Premier jeu de l'année</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-4" align="center"><strong>{{first_game.name}}</strong></p>
+              <p align="center"><img src="{{first_game.img_icon_url}}" style="width: 32px;height:32px"/></p>
+            </div>
+          </div>            
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #D1495B !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #D1495B !important;">
+              <p><strong>Dernier jeu de l'année</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-4" align="center"><strong>{{last_game.name}}</strong></p>
+              <p align="center"><img src="{{last_game.img_icon_url}}" style="width: 32px;height:32px"/></p>
+            </div>
+          </div>            
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #00798C !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #00798C !important;">
+              <p><strong>Editeur le plus représenté</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-4" align="center"><strong>{{best_publisher.publisher}}</strong></p>
+            </div>
+          </div>            
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #30638E !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #30638E !important;">
+              <p><strong>Nombre de jeux chez {{best_publisher.publisher}}</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-1" align="center"><strong>{{best_publisher.total}}</strong></p>
+            </div>
+          </div>            
+        </div>
+      </div>  
+      <br/>
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #003D5B !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #003D5B !important;">
+              <p><strong>Jeu le plus long</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-4" align="center"><strong>{{long_game.name}}</strong></p>
+              <p align="center"><img src="{{long_game.img_icon_url}}" style="width: 32px;height:32px"/></p>
+            </div>
+          </div>   
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #EDAE49 !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #EDAE49 !important;">
+              <p><strong>Temps de jeu le plus long</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-1" align="center"><strong>{{long_game_hours}} H {{long_game_minutes}}</strong></p>
+            </div>
+          </div>            
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #D1495B !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #D1495B !important;">
+              <p><strong>Jeu le plus court</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-4" align="center"><strong>{{short_game.name}}</strong></p>
+              <p align="center"><img src="{{short_game.img_icon_url}}" style="width: 32px;height:32px"/></p>
+            </div>
+          </div>   
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #00798C !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #00798C !important;">
+              <p><strong>Temps de jeu le plus court</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-1" align="center"><strong>{{short_game_hours}} H {{short_game_minutes}}</strong></p>
+            </div>
+          </div>   
+        </div>
+      </div>  
+      <br/>
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #30638E !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #30638E !important;">
+              <p><strong>Editeur le moins représenté</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-4" align="center"><strong>{{least_publisher.publisher}}</strong></p>
+            </div>
+          </div>   
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #003D5B !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #003D5B !important;">
+              <p><strong>Nombre de jeux chez {{least_publisher.publisher}}</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-1" align="center"><strong>{{least_publisher.total}}</strong></p>
+            </div>
+          </div>     
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #EDAE49 !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #EDAE49 !important;">
+              <p><strong>Plateforme la moins présente</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-3" align="center"><strong>{{least_platform.platform}}</strong></p>
+            </div>
+          </div>     
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #D1495B !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #D1495B !important;">
+              <p><strong>Nombre de jeux sur {{least_platform.platform}}</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-1" align="center"><strong>{{least_platform.total}}</strong></p>
+            </div>
+          </div>     
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #00798C !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #00798C !important;">
+              <p><strong>Plateforme la plus présente</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-3" align="center"><strong>{{best_platform.platform}}</strong></p>
+            </div>
+          </div>     
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #30638E !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #30638E !important;">
+              <p><strong>Nombre de jeux sur {{best_platform.platform}}</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-1" align="center"><strong>{{best_platform.total}}</strong></p>
+            </div>
+          </div>     
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #003D5B !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #003D5B !important;">
+              <p><strong>Jeu le plus ancien</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-4" align="center"><strong>{{oldest_game.name}}</strong></p>
+              <p align="center"><img src="{{oldest_game.img_icon_url}}" style="width: 32px;height:32px"/></p>
+            </div>
+          </div>   
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #EDAE49 !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #EDAE49 !important;">
+              <p><strong>Année de sortie du jeu le plus ancien</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-1" align="center"><strong>{{oldest_game.release_year}}</strong></p>
+            </div>
+          </div>   
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #D1495B !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #D1495B !important;">
+              <p><strong>Jeu préféré</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-4" align="center"><strong>{{best_game.name}}</strong></p>
+              <p align="center"><img src="{{best_game.img_icon_url}}" style="width: 32px;height:32px"/></p>
+            </div>
+          </div>   
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #00798C !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #00798C !important;">
+              <p><strong>Editeur du jeu préféré</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-3" align="center"><strong>{{best_game.publisher}}</strong></p>
+            </div>
+          </div>     
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #30638E !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #30638E !important;">
+              <p><strong>Jeu le moins aimé</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-4" align="center"><strong>{{worst_game.name}}</strong></p>
+              <p align="center"><img src="{{worst_game.img_icon_url}}" style="width: 32px;height:32px"/></p>
+            </div>
+          </div>   
+        </div>
+        <div class="col">
+          <div class="card h-100 text-white" style="background-color: #003D5B !important;">
+            <div class="card-header border-0 fs-6" align="center" style="background-color:  #003D5B !important;">
+              <p><strong>Editeur du jeu le moins aimé</strong></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text fs-4" align="center"><strong>{{worst_game.publisher}}</strong></p>
+            </div>
+          </div>   
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<br/><br/>
+<div class="container">
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <canvas id="stars-chart" data-url="{% url 'GamesLibrary:stars-chart' year %}" width="200" height="150"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <canvas id="release-chart" data-url="{% url 'GamesLibrary:release-chart' year %}" width="200" height="150"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<br/>
+<div class="container">
+<div class="row">
+  <div class="col-md-2">
+  </div>
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body">
+        <div class="container1">
+          <canvas id="publisher-pie" data-url="{% url 'GamesLibrary:publisher-pie' year %}" width="500" height="200"></canvas>
+        </div>  
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+  </div>
+</div>
+</div>
+<br/><br/>
+<div class="container rounded-2" style="background-color:  #d5dbdb  !important; color: black">
+<div class="row">
+  <div class="col">
+    <h2 align="center">Liste des jeux terminés</h2>
+  </div>
+</div>
+</div>
+<br/><br/>
+<div class="container">
+<div class="row row-cols-6 g-1">
+  {% for game in game_list %}
+  <div class="col">
+    <div class="card h-100">
+        <a href="{% url 'GamesLibrary:game-detail' game.id %}"><img src="{{game.img_url}}" class="card-img-top rounded-2"/></a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<br/><br/>
 </div>
 </body>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-  <script>
 
-    $(function () {
 
-      var $gamesChart = $("#game-chart");
-      $.ajax({
-        url: $gamesChart.data("url"),
-        success: function (data) {
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
 
-          var ctx = $gamesChart[0].getContext("2d");
+  $(function () {
 
-          new Chart(ctx, {
-            type: 'bar',
-            data: {
+    var $gamesChart = $("#game-chart");
+    $.ajax({
+      url: $gamesChart.data("url"),
+      success: function (data) {
+
+        var ctx = $gamesChart[0].getContext("2d");
+
+        new Chart(ctx, 
+        {
+          type: 'bar',
+          data: {
+            labels: data.labels1,
+            datasets: [{
+              label: 'Jeux finis',
+              data: data.data1,
+              backgroundColor: '#EDAE49',
+              stack: 'Stack 0',
+            },{
+              label: 'Jeux multi',
+              data: data.data2,
+              backgroundColor: '#D1495B',
+              stack: 'Stack 0',
+            },{
+              label: 'Jeux sans fin',
+              data: data.data3,
+              backgroundColor: '#00798C',
+              stack: 'Stack 0',
+            }]          
+          },
+          options: {
+    title: {
+      display: true,
+      text: "Jeux"
+    },
+    legend: {
+              display: true,
+              position: 'bottom'
+              },
+  responsive: true,
+  scales: {
+    x: {
+      stacked: true,
+      grid: {
+        display:false
+            },
+      },
+    y: {
+      stacked: true,
+      grid: {
+        display:false
+            },
+      ticks: {
+        callback: (val, index) => {
+          return index % 5 === 0 ? val : undefined;
+                  },
+              },
+        },
+  }
+}
+        });
+
+      }
+    });
+
+  });
+
+</script>
+
+<script>
+
+  $(function () {
+
+    var $timeChart = $("#time-chart");
+    $.ajax({
+      url: $timeChart.data("url"),
+      success: function (data) {
+
+        var ctx = $timeChart[0].getContext("2d");
+
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+              datasets: [{
+              label: 'Temps par mois (H)',
+              backgroundColor: '#EDAE49',
+              borderColor: '#EDAE49',
+              data: data.data2,
+              order: 1
+              }, {
+              label: 'Temps total (H)',
+              data: data.data,
+              type: 'line',
+              fill: true,
+              borderColor: '#00798C',
+              backgroundColor: '#00798C',
+              order: 2
+               }],
+     labels: data.labels,
+ },
+          options: {
+              legend: {
+              display: false
+              },
+              scales: {
+    x: {
+      stacked: true,
+      grid: {
+        display:false
+            },
+      },
+    y: {
+      stacked: true,
+      grid: {
+        display:false
+            },
+      ticks: {
+        callback: (val, index) => {
+          return index % 3 === 0 ? val : undefined;
+                  },
+              },
+        }},
+            responsive: true,
+            title: {
+              display: true,
+              text: 'Time spent (only in solo games)'
+            }
+          }
+        });
+
+      }
+    });
+
+  });
+
+</script>
+<script>
+
+  $(function () {
+
+    var $genrePie = $("#genre-pie");
+    $.ajax({
+      url: $genrePie.data("url"),
+      success: function (data) {
+
+        var ctx = $genrePie[0].getContext("2d");
+
+        new Chart(ctx, {
+          type: 'doughnut',
+          data: {
               labels: data.labels,
               datasets: [{
-                label: 'Games finished',
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgb(54, 162, 235)',
-                borderWidth: 1,
-                data: data.data
-              }]          
+                  label: 'Games by genre',
+                  data: data.data,
+                  hoverOffset: 4,
+                  backgroundColor: data.bkgrnd
+              }],
+          },
+          options: {
+            responsive: true,
+            aspectRatio: 2,
+            plugins: {
+            title: {
+              display: false,
+              text: 'Games by genre'
             },
-            options: {
-                legend: {
-                display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                        beginAtZero: true
-                        }
-                        }]
-                        },
-              responsive: false,
-              title: {
-                display: true,
-                text: 'Number of finished games'
-              }
-            }
-          });
-
-        }
-      });
-
-    });
-
-  </script>
-
-  <script>
-
-    $(function () {
-
-      var $timeChart = $("#time-chart");
-      $.ajax({
-        url: $timeChart.data("url"),
-        success: function (data) {
-
-          var ctx = $timeChart[0].getContext("2d");
-
-          new Chart(ctx, {
-            type: 'bar',
-            data: {
-                datasets: [{
-                label: 'Time spent (per month)',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgb(255, 99, 132)',
-                borderWidth: 1,
-                data: data.data2,
-                order: 2
-                }, {
-                label: 'Total time spent in hours',
-                data: data.data,
-                type: 'line',
-                fill: false,
-                borderColor: 'rgb(54, 162, 235)',
-                order: 1
-                 }],
-       labels: data.labels,
-   },
-            options: {
-                legend: {
-                display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                        beginAtZero: true
-                        },
-                        gridLines: {
-                        display:true
-                        }
-                        }],
-                    xAxes: [{
-                        gridLines: {
-                        display:true
-                        }
-                        }]
-                        },
-              responsive: false,
-              title: {
-                display: true,
-                text: 'Time spent'
-              }
-            }
-          });
-
-        }
-      });
-
-    });
-
-  </script>
-  <script>
-
-    $(function () {
-
-      var $genrePie = $("#genre-pie");
-      $.ajax({
-        url: $genrePie.data("url"),
-        success: function (data) {
-
-          var ctx = $genrePie[0].getContext("2d");
-
-          new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: data.labels,
-                datasets: [{
-                    label: 'Games by genre',
-                    data: data.data,
-                    hoverOffset: 4,
-                    backgroundColor: data.bkgrnd
-                }],
-            },
-            options: {
-              responsive: false,
-              title: {
-                display: true,
-                text: 'Games by genre'
-              }
-            }
-          });
-
-        }
-      });
-
-    });
-
-  </script>
-  <script>
-
-    $(function () {
-
-      var $platformPie = $("#platform-pie");
-      $.ajax({
-        url: $platformPie.data("url"),
-        success: function (data) {
-
-          var ctx = $platformPie[0].getContext("2d");
-
-          new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: data.labels,
-                datasets: [{
-                    label: 'Games by platform',
-                    data: data.data,
-                    hoverOffset: 4,
-                    backgroundColor: data.bkgrnd
-                }],
-            },
-            options: {
-              responsive: false,
-              title: {
-                display: false,
-                text: 'Games by platform'
+            legend: {
+              display: true,
+              position: 'right'
               },
-              legend: {
-                display: true
-                },
             }
-          });
+          }
+        });
 
-        }
-      });
-
+      }
     });
 
-  </script>
+  });
+
+</script>
+<script>
+
+  $(function () {
+
+    var $platformPie = $("#platform-pie");
+    $.ajax({
+      url: $platformPie.data("url"),
+      success: function (data) {
+
+        var ctx = $platformPie[0].getContext("2d");
+
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+              labels: data.labels,
+              datasets: [{
+                  label: 'Games by platform',
+                  data: data.data,
+                  hoverOffset: 4,
+                  backgroundColor: data.bkgrnd
+              }],
+          },
+          options: {
+            responsive: true,
+            title: {
+              display: false,
+              text: 'Games by platform'
+            },
+            legend: {
+              display: true,
+              position: 'right'
+              },
+          }
+        });
+
+      }
+    });
+
+  });
+
+</script>
+
+<script>
+
+$(function () {
+
+var $starsChart = $("#stars-chart");
+$.ajax({
+url: $starsChart.data("url"),
+success: function (data) {
+
+  var ctx = $starsChart[0].getContext("2d");
+
+  new Chart(ctx, 
+  {
+    type: 'bar',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: '',
+        data: data.data,
+        backgroundColor: '#EDAE49',
+      }]          
+    },
+    options: {
+      plugins: {
+        legend: {
+          display: false,
+          },
+        title: {
+          display: true,
+          text: "Répartition des notes",
+          font: {
+                      size: 16
+                  }
+          },
+      },
+responsive: true,
+scales: {
+x: {
+grid: {
+  display:false
+      },
+},
+y: {
+grid: {
+  display:false
+      },
+display: false,
+ticks: {
+  callback: (val, index) => {
+    return index % 5 === 0 ? val : undefined;
+            },
+        },
+  },
+}
+}
+  });
+
+}
+});
+
+});
+
+</script>
+
+<script>
+
+$(function () {
+
+var $releaseChart = $("#release-chart");
+$.ajax({
+url: $releaseChart.data("url"),
+success: function (data) {
+
+  var ctx = $releaseChart[0].getContext("2d");
+
+  new Chart(ctx, 
+  {
+    type: 'bar',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: '',
+        data: data.data,
+        backgroundColor: '#EDAE49',
+      }]          
+    },
+    options: {
+      plugins: {
+        legend: {
+          display: false,
+          },
+        title: {
+          display: true,
+          text: "Répartition des années de sortie",
+          font: {
+                      size: 16
+                  }
+          },
+      },
+responsive: true,
+scales: {
+x: {
+grid: {
+  display:false
+      },
+},
+y: {
+grid: {
+  display:false
+      },
+display: false,
+ticks: {
+  callback: (val, index) => {
+    return index % 5 === 0 ? val : undefined;
+            },
+        },
+  },
+}
+}
+  });
+
+}
+});
+
+});
+
+</script>
+<script>
+
+$(function () {
+
+var $publisherPie = $("#publisher-pie");
+$.ajax({
+url: $publisherPie.data("url"),
+success: function (data) {
+
+  var ctx = $publisherPie[0].getContext("2d");
+
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: data.labels,
+        datasets: [{
+            label: 'Games by publisher',
+            data: data.data,
+            hoverOffset: 4,
+            backgroundColor: data.bkgrnd
+        }],
+    },
+    options: {
+      responsive: true,
+      aspectRatio: 2,
+      plugins: {
+      title: {
+        display: false,
+        text: 'Games by publisher'
+      },
+      legend: {
+        display: true,
+        position: 'right'
+        },
+      }
+    }
+  });
+
+}
+});
+
+});
+
+</script>
+
 {% endblock %}
