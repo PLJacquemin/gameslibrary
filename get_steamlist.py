@@ -43,6 +43,7 @@ def getownedgames(apikey, steamid):
         df_to_csv.to_csv('GamesLibrary/csv_db/steam_list.csv',sep=";", index=False)
         print(f"New file created with {len(df_to_csv)} entries")
         return df_to_csv
+    
     #sinon on ajoute les lignes manquantes
     elif os.path.exists('GamesLibrary/csv_db/steam_list.csv'):
         df_games_new = pd.read_csv('GamesLibrary/csv_db/steam_list.csv', sep=';')
