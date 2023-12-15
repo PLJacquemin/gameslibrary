@@ -21,7 +21,7 @@
     <tbody>
     {% for game in game_list %}
     <tr>
-      <td><p class="card-text"><a href="{% url 'steamlist:game-detail' game.id %}">{{game.name}}</td>
+      <td><p class="card-text"><a href="{% url 'GamesLibrary:game-detail' game.id %}">{{game.name}}</td>
       <td>{{game.publisher}}</td>
       <td>{{game.platform}}</td>
       <td>{{game.release_year}}</td>
