@@ -82,7 +82,7 @@ def year_view(request, year=datetime.date.today().year):
 
     # Préparation du bouton de sélection des dates
     dt_selection = []
-    for dt in Steam_game.objects.filter(completed=True).dates('date','year'):
+    for dt in Video_game.objects.filter(completed=True).dates('date','year'):
         dt_selection.append(dt.year)
     dt_selection.reverse()
 
@@ -91,7 +91,7 @@ def year_view(request, year=datetime.date.today().year):
     end_date=f'{year}-12-31'
 
     # Récupération de la liste des jeux terminés entre la date de début et de fin
-    qset = Steam_game.objects.filter(date__gte=start_date, date__lte=end_date, completed=True)
+    qset = Video_game.objects.filter(date__gte=start_date, date__lte=end_date, completed=True)
     # Alimentation des indicateurs
     finished_year = qset.count()
     avg_year = round(qset.aggregate(average=Avg('playtime_forever'))['average'])
@@ -117,17 +117,17 @@ def year_view(request, year=datetime.date.today().year):
     last_game_hours = last_game.playtime_forever // 60
     last_game_minutes = last_game.playtime_forever % 60
     min_year = round(qset.aggregate(mini=Min('playtime_forever', output_field=FloatField()))['mini']/60,2)
-    best_platform = Steam_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('platform').annotate(total=Count('platform')).order_by("-total")[0]
-    least_platform = Steam_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('platform').annotate(total=Count('platform')).order_by("total")[0]
-    best_publisher = Steam_game.objects.filter(date__gte=start_date, date__lte=end_date, completed=True).values('publisher').annotate(total=Count('publisher')).order_by("-total")[0]
-    least_publisher = Steam_game.objects.filter(date__gte=start_date, date__lte=end_date, completed=True).values('publisher').annotate(total=Count('publisher')).order_by("total")[0]
-    total_played = Steam_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).count()
-    gaas_played = Steam_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date, gaas=True).count()
-    unfi_played = Steam_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date, unfinishable=True, gaas=False).count()
-    number_platform = Steam_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('platform').distinct().count()
-    number_genre = Steam_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('genre').distinct().count()
-    best_genre = Steam_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('genre').annotate(total=Count('genre')).order_by("-total")[0]
-    total_playtime = Steam_game.objects.filter(date__gte=start_date, date__lte=end_date, completed=True).aggregate(Sum('playtime_forever'))['playtime_forever__sum']
+    best_platform = Video_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('platform').annotate(total=Count('platform')).order_by("-total")[0]
+    least_platform = Video_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('platform').annotate(total=Count('platform')).order_by("total")[0]
+    best_publisher = Video_game.objects.filter(date__gte=start_date, date__lte=end_date, completed=True).values('publisher').annotate(total=Count('publisher')).order_by("-total")[0]
+    least_publisher = Video_game.objects.filter(date__gte=start_date, date__lte=end_date, completed=True).values('publisher').annotate(total=Count('publisher')).order_by("total")[0]
+    total_played = Video_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).count()
+    gaas_played = Video_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date, gaas=True).count()
+    unfi_played = Video_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date, unfinishable=True, gaas=False).count()
+    number_platform = Video_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('platform').distinct().count()
+    number_genre = Video_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('genre').distinct().count()
+    best_genre = Video_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('genre').annotate(total=Count('genre')).order_by("-total")[0]
+    total_playtime = Video_game.objects.filter(date__gte=start_date, date__lte=end_date, completed=True).aggregate(Sum('playtime_forever'))['playtime_forever__sum']
     total_playtime_hours = total_playtime // 60
     total_playtime_minutes = "{:02d}".format(total_playtime % 60)
     game_list = qset.order_by("-date")
@@ -164,11 +164,11 @@ def global_view(request):
     # Alimentation des indicateurs
 
     # Indicateurs globaux
-    qset = Steam_game.objects.all()
-    total = Steam_game.objects.all().count()
-    finished = Steam_game.objects.filter(completed=True).count()
-    played = Steam_game.objects.filter(played=True, completed=False, unfinishable=False, gaas=False).count()
-    unfinishable = Steam_game.objects.filter(played=True, unfinishable=True).count()+Steam_game.objects.filter(played=True, gaas=True, unfinishable=False).count()
+    qset = Video_game.objects.all()
+    total = Video_game.objects.all().count()
+    finished = Video_game.objects.filter(completed=True).count()
+    played = Video_game.objects.filter(played=True, completed=False, unfinishable=False, gaas=False).count()
+    unfinishable = Video_game.objects.filter(played=True, unfinishable=True).count()+Video_game.objects.filter(played=True, gaas=True, unfinishable=False).count()
     untouched = total - finished - played - unfinishable
     progress_pl = round(played/total*100)
     progress_fi = round(finished/total*100)
@@ -190,7 +190,7 @@ def global_view(request):
     less_time_cal = time_calculation(less_time)
 
     # Indicateurs par genre
-    tot_genre = Steam_game.objects.filter(~Q(genre="")).values('genre').annotate(total=Count('genre')).annotate(time=Sum('playtime_forever')).annotate(time_game=Sum('playtime_forever')/Count('genre'))
+    tot_genre = Video_game.objects.filter(~Q(genre="")).values('genre').annotate(total=Count('genre')).annotate(time=Sum('playtime_forever')).annotate(time_game=Sum('playtime_forever')/Count('genre'))
 
         # Meilleur genre de jeux
     best_genre=tot_genre.order_by('-total')[0]
@@ -241,7 +241,7 @@ def global_view(request):
 # Affichage d'une liste de jeux, actuellement juste une liste de jeux affichée de manière "random"
 
 def all_games(request):
-    game_list = Steam_game.objects.all()
+    game_list = Video_game.objects.all()
     return render(request, 'games_list.html', {'game_list': game_list.order_by('-update_date')})
 
 # Ajout d'un jeu
@@ -263,7 +263,7 @@ def add_game(request):
 # Affichage des détails d'un jeu
 
 def game_detail(request, game_id):
-    game = Steam_game.objects.get(pk=game_id)
+    game = Video_game.objects.get(pk=game_id)
     game_hltb = game.name.replace("- ", " ").replace(": ", " ").replace("™", "")
 
     # Récupération des données venant de How Long To Beat
@@ -286,7 +286,7 @@ def game_detail(request, game_id):
 # Mise à jour des jeux
 
 def game_update(request, game_id):
-    game = Steam_game.objects.get(pk=game_id)
+    game = Video_game.objects.get(pk=game_id)
     form = GameForm(request.POST or None, instance=game)
     if form.is_valid():
         form.save()
@@ -298,7 +298,7 @@ def game_update(request, game_id):
 def search_game(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        games = Steam_game.objects.filter(name__icontains=searched)
+        games = Video_game.objects.filter(name__icontains=searched)
         return render(request, 'search_games.html', {'searched':searched, 'games':games})
     else:
         return render(request, 'search_games.html', {})
@@ -306,9 +306,9 @@ def search_game(request):
 # Mode roulette: affiche les détails d'un jeu aléatoire
 
 def roulette(request):
-    pks = Steam_game.objects.filter(completed=False).values_list('pk', flat=True)
+    pks = Video_game.objects.filter(completed=False).values_list('pk', flat=True)
     random_pk = choice(pks)
-    game = Steam_game.objects.get(pk=random_pk)
+    game = Video_game.objects.get(pk=random_pk)
     game_hltb = game.name.replace("- ", " ").replace(": ", " ").replace("™", "")
 
     # Récupération des données venant de How Long To Beat
@@ -328,7 +328,7 @@ def roulette(request):
 # Suppression d'un jeu
 
 def game_delete(request, game_id):
-	game = Steam_game.objects.get(pk=game_id)
+	game = Video_game.objects.get(pk=game_id)
 	game.delete()
 	return redirect('steamlist:games-list')	
 
@@ -392,9 +392,9 @@ def year_games_chart(request, year):
     start_date=f'{year}-01-01'
     end_date=f'{year}-12-31'
 
-    queryset_1 = Steam_game.objects.filter(date__gte=start_date, date__lte=end_date,completed=True).annotate(month=TruncMonth('date')).values('month').annotate(total=Count('appid')).order_by('month')
-    queryset_2 = Steam_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date,gaas=True).annotate(month=TruncMonth('last_played')).values('month').annotate(total=Count('appid')).order_by('month')
-    queryset_3 = Steam_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date,unfinishable=True, gaas=False).annotate(month=TruncMonth('last_played')).values('month').annotate(total=Count('appid')).order_by('month')
+    queryset_1 = Video_game.objects.filter(date__gte=start_date, date__lte=end_date,completed=True).annotate(month=TruncMonth('date')).values('month').annotate(total=Count('appid')).order_by('month')
+    queryset_2 = Video_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date,gaas=True).annotate(month=TruncMonth('last_played')).values('month').annotate(total=Count('appid')).order_by('month')
+    queryset_3 = Video_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date,unfinishable=True, gaas=False).annotate(month=TruncMonth('last_played')).values('month').annotate(total=Count('appid')).order_by('month')
     
     for i in range(1,13):
         labels_1.append(f"{year}-{i:02d}")
@@ -445,7 +445,7 @@ def year_time_chart(request, year):
     start_date=f'{year}-01-01'
     end_date=f'{year}-12-31'
 
-    queryset = Steam_game.objects.filter(date__gte=start_date, date__lte=end_date, completed=True).annotate(month=TruncMonth('date')).values('month').annotate(time=Sum('playtime_forever')/60).order_by('month')
+    queryset = Video_game.objects.filter(date__gte=start_date, date__lte=end_date, completed=True).annotate(month=TruncMonth('date')).values('month').annotate(time=Sum('playtime_forever')/60).order_by('month')
     
     for i in range(1,13):
         labels.append(f"{year}-{i:02d}")
@@ -480,7 +480,7 @@ def year_genre_pie(request, year):
     start_date=f'{year}-01-01'
     end_date=f'{year}-12-31'
 
-    queryset = Steam_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('genre').annotate(total=Count('genre'))
+    queryset = Video_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('genre').annotate(total=Count('genre'))
 
     i = 0
     for entry in queryset:
@@ -505,7 +505,7 @@ def year_platform_pie(request, year):
     start_date=f'{year}-01-01'
     end_date=f'{year}-12-31'
 
-    queryset = Steam_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('platform').annotate(total=Count('platform'))
+    queryset = Video_game.objects.filter(last_played__gte=start_date, last_played__lte=end_date).values('platform').annotate(total=Count('platform'))
 
     i = 0
     for entry in queryset:
@@ -528,7 +528,7 @@ def year_stars_chart(request, year):
     start_date=f'{year}-01-01'
     end_date=f'{year}-12-31'
 
-    queryset = Steam_game.objects.filter(date__gte=start_date, date__lte=end_date).values('num_stars').annotate(total=Count('num_stars'))
+    queryset = Video_game.objects.filter(date__gte=start_date, date__lte=end_date).values('num_stars').annotate(total=Count('num_stars'))
 
     for i in range(1,11):
         label.append(f"{i:02d}")
@@ -552,7 +552,7 @@ def year_release_chart(request, year):
     end_date=f'{year}-12-31'
 
 
-    queryset = Steam_game.objects.filter(date__gte=start_date, date__lte=end_date).values('release_year').annotate(total=Count('release_year'))
+    queryset = Video_game.objects.filter(date__gte=start_date, date__lte=end_date).values('release_year').annotate(total=Count('release_year'))
 
     for i in range(min(list(queryset.values_list('release_year', flat=True))),int(year)+1):
         label.append(f"{i:02d}")
@@ -577,7 +577,7 @@ def year_publisher_pie(request, year):
     end_date=f'{year}-12-31'
 
     colors = bkg_colors
-    queryset = Steam_game.objects.filter(date__gte=start_date, date__lte=end_date).values('publisher').annotate(total=Count('publisher'))
+    queryset = Video_game.objects.filter(date__gte=start_date, date__lte=end_date).values('publisher').annotate(total=Count('publisher'))
 
     i = 0
     for entry in queryset:
@@ -600,10 +600,10 @@ def global_owned_pie(request):
     bkgrnd = ['#D1495B', '#00798C', '#30638E', '#003D5B' ]
     #bkgrnd = ['#59CD90', '#3FA7D6', '#FAC05E', '#EE6352' ]
 
-    total = Steam_game.objects.all().count()
-    finished = Steam_game.objects.filter(completed=True).count()
-    played = Steam_game.objects.filter(played=True, completed=False, unfinishable=False, gaas=False).count()
-    unfinishable = Steam_game.objects.filter(played=True, unfinishable=True).count()+Steam_game.objects.filter(played=True, gaas=True, unfinishable=False).count()
+    total = Video_game.objects.all().count()
+    finished = Video_game.objects.filter(completed=True).count()
+    played = Video_game.objects.filter(played=True, completed=False, unfinishable=False, gaas=False).count()
+    unfinishable = Video_game.objects.filter(played=True, unfinishable=True).count()+Video_game.objects.filter(played=True, gaas=True, unfinishable=False).count()
     untouched = total - finished - played - unfinishable
     labels = ['Finis','Lancés','MMO/Multi','Non lancés']
     data=[finished, played, unfinishable, untouched]
@@ -622,7 +622,7 @@ def global_platform_pie(request):
     colors = bkg_colors
     i = 0
 
-    queryset = Steam_game.objects.values('platform').annotate(total=Count('platform'))
+    queryset = Video_game.objects.values('platform').annotate(total=Count('platform'))
     for entry in queryset:
         data.append(entry['total'])
         platform.append(entry['platform'])
@@ -642,7 +642,7 @@ def time_genre_chart(request):
     data = []
     data_2 = []
 
-    queryset = Steam_game.objects.filter(~Q(genre="")).values('genre').annotate(time=Sum('playtime_forever')).annotate(time_game=Sum('playtime_forever')/Count('genre'))
+    queryset = Video_game.objects.filter(~Q(genre="")).values('genre').annotate(time=Sum('playtime_forever')).annotate(time_game=Sum('playtime_forever')/Count('genre'))
     
     total_time=0
     for entry in queryset:
@@ -666,7 +666,7 @@ def global_genre_pie(request):
     colors = bkg_colors
     i = 0
 
-    queryset = Steam_game.objects.filter(~Q(genre="")).values('genre').annotate(total=Count('genre'))
+    queryset = Video_game.objects.filter(~Q(genre="")).values('genre').annotate(total=Count('genre'))
     for entry in queryset:
         data.append(entry['total'])
         genres.append(entry['genre'])
