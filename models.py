@@ -4,7 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-class Steam_game(models.Model):
+class Video_game(models.Model):
     name = models.CharField('Name',max_length=100,)
     playtime_forever = models.IntegerField('Playtime',default=0)
     img_icon_url = models.CharField('Icon URL',max_length=250,default='')

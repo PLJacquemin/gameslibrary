@@ -1,11 +1,11 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Steam_game
+from .models import Video_game
 from datetime import date
 
 class GameForm(ModelForm):
     class Meta:
-        model = Steam_game
+        model = Video_game
         fields = "__all__"
         list_1_10 = range(1,11)
 

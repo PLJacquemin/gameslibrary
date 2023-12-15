@@ -13,7 +13,7 @@ from math import *
 
 # Import des fonctions d'autres fichiers locaux
 from .supp_functions import *
-from .models import Steam_game
+from .models import Video_game
 from .get_libraries import get_steam_db, get_psn_db
 from .forms import GameForm
 
