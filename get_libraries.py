@@ -9,7 +9,7 @@ def get_steam_db(apikey, steamid):
 
     #sqlite database parameters
     database='sqlite:///db.sqlite3'
-    table='steamlist_steam_game'
+    table='GamesLibrary_video_game'
 
     #csv creation and storage in dataframe
     data = getownedgames(apikey=apikey, steamid=steamid)
@@ -24,7 +24,7 @@ def get_psn_db(token):
 
     #sqlite database parameters
     database='sqlite:///db.sqlite3'
-    table='steamlist_steam_game'
+    table='GamesLibrary_video_game'
 
     #csv creation and storage in dataframe
     data = getpsngames(token=token)

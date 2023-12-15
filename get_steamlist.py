@@ -28,7 +28,7 @@ def getownedgames(apikey, steamid):
     df_to_csv = pd.DataFrame()
 
     #si premier fichier, création
-    if not os.path.exists('steamlist/csv_db/steam_list.csv'):
+    if not os.path.exists('GamesLibrary/csv_db/steam_list.csv'):
         df_to_csv['id']=df_games['appid']
         df_to_csv['name']=df_games['name']
         df_to_csv['playtime_forever']=df_games['playtime_forever']
@@ -54,14 +54,14 @@ def getownedgames(apikey, steamid):
             df_to_csv.loc[df_to_csv['name']==game, 'img_url']=f"https://cdn.akamai.steamstatic.com/steam/apps/{df_to_csv.loc[df_to_csv['name']==game]['appid'].values[0]}/header.jpg"
 
 
-        df_to_csv.to_csv('steamlist/csv_db/steam_list.csv',sep=";", index=False)
+        df_to_csv.to_csv('GamesLibrary/csv_db/steam_list.csv',sep=";", index=False)
         print(f"New file created with {len(df_to_csv)} entries")
         return df_to_csv
 
 
     #sinon on ajoute les lignes manquantes
-    elif os.path.exists('steamlist/csv_db/steam_list.csv'):
-        df_games_new = pd.read_csv('steamlist/csv_db/steam_list.csv', sep=';')
+    elif os.path.exists('GamesLibrary/csv_db/steam_list.csv'):
+        df_games_new = pd.read_csv('GamesLibrary/csv_db/steam_list.csv', sep=';')
         count=0
         count=0
         for game in df_games['name']:
@@ -96,7 +96,7 @@ def getownedgames(apikey, steamid):
                     df_games_new.loc[df_games_new['name']==game, 'playtime_forever'] = df_games.loc[df_games['name']==game]['playtime_forever'].values[0]
                     df_games_new.loc[df_games_new['name']==game, 'update_date'] = date.today().strftime("%Y-%m-%d")
                     print(f"Name {game}, Time {df_games_new.loc[df_games_new['name']==game]['playtime_forever'].values[0]}")
-        df_games_new.sort_values('name').to_csv('steamlist/csv_db/steam_list.csv',sep=";", index=False)
+        df_games_new.sort_values('name').to_csv('GamesLibrary/csv_db/steam_list.csv',sep=";", index=False)
         print(f"The existing file was updated with {count} new entries")
         print("*"*50)
         return df_games_new
