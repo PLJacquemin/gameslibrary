@@ -8,26 +8,6 @@ data_columns = ['id','name','playtime_forever','img_icon_url','completed',
                 'img_url','gaas','unfinishable','critic','num_stars',
                 'publisher','release_year','update_date']
 
-#df_to_csv['id']=df_games['appid']
-#df_to_csv['name']=df_games['name']
-#df_to_csv['playtime_forever']=df_games['playtime_forever']
-#df_to_csv['img_icon_url']=df_games['img_icon_url']
-#df_to_csv['completed']=False
-#df_to_csv['played']=False
-#df_to_csv['date']="2020-01-01"
-#df_to_csv['genre']=""
-#df_to_csv['platform']="Steam"
-#df_to_csv['appid']=df_games['appid']
-#df_to_csv['last_played']="2020-01-01"
-#df_to_csv['img_url']=""
-#df_to_csv['gaas']=False
-#df_to_csv['unfinishable']=False
-#df_to_csv['critic']=''
-#df_to_csv['num_stars']=5
-#df_to_csv['publisher']=''
-#df_to_csv['release_year']=1900
-#df_to_csv['update_date']="2020-01-01"
-
 
 def getpsngames(token):
     psnawp = PSNAWP(token)
