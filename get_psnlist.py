@@ -35,7 +35,7 @@ def getpsngames(token):
                                   5,
                                   '',
                                   1900,
-                                  "2020-01-01"]],columns=data_columns)
+                                  date.today().strftime("%Y-%m-%d")]],columns=data_columns)
             df_game.loc[df_game['playtime_forever']!=0, 'played'] = True
             df_games_new = pd.concat([df_games_new, df_game], ignore_index=True)
             game_count+=1
