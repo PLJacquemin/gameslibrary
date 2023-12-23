@@ -47,7 +47,7 @@ def getownedgames(apikey, steamid):
         df_to_csv['num_stars']=5
         df_to_csv['publisher']=''
         df_to_csv['release_year']=1900
-        df_to_csv['update_date']="2020-01-01"
+        df_to_csv['update_date']=date.today().strftime("%Y-%m-%d")
         df_to_csv.loc[df_to_csv['playtime_forever']!=0, 'played'] = True
         for game in df_to_csv['name']:
             df_to_csv.loc[df_to_csv['name']==game, 'img_icon_url']=f"http://media.steampowered.com/steamcommunity/public/images/apps/{df_to_csv.loc[df_to_csv['name']==game]['appid'].values[0]}/{df_to_csv.loc[df_to_csv['name']==game]['img_icon_url'].values[0]}.jpg"
