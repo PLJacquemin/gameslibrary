@@ -72,7 +72,7 @@ def getpsngames(token):
             else:
                 df_games_new.loc[df_games_new['name']==game, 'playtime_forever'] = game.play_duration.seconds//60 + game.play_duration.days * 1440
                 df_games_new.loc[df_games_new['name']==game, 'update_date'] = date.today().strftime("%Y-%m-%d")
-                print(f"Name {game}, Time {df_games_new.loc[df_games_new['name']==game]['playtime_forever'].values[0]}")
+                #print(f"Name {game}, Time {df_games_new.loc[df_games_new['name']==game]['playtime_forever'].values[0]}")
         df_games_new.sort_values('name').to_csv('GamesLibrary/csv_db/psn_list.csv',sep=";", index=False)
         print(f"The existing file was updated with {count} new entries")
         print("*"*50)
